@@ -10,13 +10,13 @@ public class PersonBuilder {
 	protected Person person = new Person(); 
 	
 	public PersonGeneralInfoBuilder has() {
-		return new PersonGeneralInfoBuilder(); 
+		return new PersonGeneralInfoBuilder(person); 
 	}
 	public PersonDeceasedBuilder deceased() {
-		return new PersonDeceasedBuilder();  
+		return new PersonDeceasedBuilder(person);  
 	}
 	public PersonBornBuilder born() { 
-		return new PersonBornBuilder(); 
+		return new PersonBornBuilder(person); 
 	}
 	
 	public PersonBuilder hasChild(Person child, Person partner) { 
@@ -38,6 +38,11 @@ public class PersonBuilder {
 			.getParents()
 				.add(parent); 
 		return this; 
+	}
+	
+	
+	public Person build() {
+		return this.person; 
 	}
 	
 	

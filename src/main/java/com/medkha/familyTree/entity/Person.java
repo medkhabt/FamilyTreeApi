@@ -1,5 +1,7 @@
 package com.medkha.familyTree.entity;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import lombok.Data;
 
@@ -20,16 +23,19 @@ public class Person {
 	private String firstName; 
 	private String lastName; 
 	private Gender gender;
-	private Date birthdate; 
+	private LocalDate birthdate; 
 	private String birthplace; 
-	private Date deathDate; 
+	private LocalDate deathDate; 
 	private String deathPlace; 
 	
-	private List<Person> parents;
-	private List<Person> partners; 
-	private List<Person> children; 
-
-	private List<Family> families; 
+	@ManyToMany
+	private List<Person> parents = new ArrayList<>();
+	@ManyToMany
+	private List<Person> partners = new ArrayList<>(); 
+	@ManyToMany
+	private List<Person> children = new ArrayList<>(); 
+	@ManyToMany(targetEntity=Family.class)
+	private List<Family> families = new ArrayList<>(); 
 	
 //	public void addChild(Person child) {
 //		children.add(child); 

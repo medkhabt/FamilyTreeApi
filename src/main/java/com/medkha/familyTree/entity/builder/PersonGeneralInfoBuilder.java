@@ -1,12 +1,14 @@
 package com.medkha.familyTree.entity.builder;
 
 import com.medkha.familyTree.entity.Gender;
+import com.medkha.familyTree.entity.Person;
 
 
 public class PersonGeneralInfoBuilder extends PersonBuilder{
 	
-	public PersonGeneralInfoBuilder() {
-		super(); 
+	
+	public PersonGeneralInfoBuilder(Person person) { 
+		this.person = person; 
 	}
 	public PersonGeneralInfoBuilder firstName(String firstName) { 
 		person.setFirstName(firstName);

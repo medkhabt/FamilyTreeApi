@@ -1,16 +1,19 @@
 package com.medkha.familyTree.entity.builder;
 
+import java.time.LocalDate;
 import java.util.Date;
+
+import com.medkha.familyTree.entity.Person;
 
 
 
 public class PersonDeceasedBuilder extends PersonBuilder{
 	
-	public PersonDeceasedBuilder() {
-		super(); 
+	public PersonDeceasedBuilder(Person person) {
+		this.person = person;
 	}
 	
-	public PersonDeceasedBuilder date(Date date) {
+	public PersonDeceasedBuilder date(LocalDate date) {
 		person.setDeathDate(date);
 		return this;
 	}

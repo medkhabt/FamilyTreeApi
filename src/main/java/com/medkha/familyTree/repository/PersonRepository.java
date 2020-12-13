@@ -25,13 +25,4 @@ public interface PersonRepository extends
 		public Iterable<Person> findByDeathDateBetween(Date dateStart, Date dateEnd);
 		public Iterable<Person> findByDeathPlace(String deathPlace); 
 		
-
-		
-		/**
-		 * NEEDS A TEST
-		 * @param family
-		 * @return
-		 */
-		@Query(value = "select f.familyMembers FROM Family as f where f.id=:idFamily")
-		public Iterable<Person> getDemandeurByFamily(@Param("idFamily") long id); 
 }

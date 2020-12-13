@@ -54,26 +54,9 @@ public class PersonRepositoryTest {
 			() -> assertFalse(result.equals("MedKhalil"))
 				); 
 		
-		; 
+	 
 		
 	}
 	
-	/**
-	 * Test to be done. 
-	 */
-	@Disabled
-	@Test
-	public void should_RetTrue_When_FamilyExist_In_PersonFamilies() {
-		//given
-		
-		String firstName = "Med Khalil"; 
-		String result; 
-		
-		//when
-		
-		Iterator<Person> personIterator = repo.getDemandeurByFamily(1).iterator();
-		result = ((Person)personIterator.next()).getFirstName(); 		//then
-		
-		assertTrue(result.equals(firstName));
-	}
+	
 }

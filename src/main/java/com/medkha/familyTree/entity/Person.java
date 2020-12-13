@@ -3,7 +3,9 @@ package com.medkha.familyTree.entity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,13 +31,13 @@ public class Person {
 	private String deathPlace; 
 	
 	@ManyToMany
-	private List<Person> parents = new ArrayList<>();
+	private Set<Person> parents = new HashSet<>();
 	@ManyToMany
-	private List<Person> partners = new ArrayList<>(); 
+	private Set<Person> partners = new HashSet<>(); 
 	@ManyToMany
-	private List<Person> children = new ArrayList<>(); 
-	@ManyToMany(targetEntity=Family.class)
-	private List<Family> families = new ArrayList<>(); 
+	private Set<Person> children = new HashSet<>(); 
+	@ManyToMany(mappedBy = "familyMembers")
+	private Set<Family> families = new HashSet<>(); 
 	
 //	public void addChild(Person child) {
 //		children.add(child); 

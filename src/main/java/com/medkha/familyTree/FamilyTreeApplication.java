@@ -1,19 +1,9 @@
 package com.medkha.familyTree;
 
-import java.time.LocalDate;
-import java.time.Month;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
-import com.medkha.familyTree.entity.Family;
-import com.medkha.familyTree.entity.Gender;
-import com.medkha.familyTree.entity.Person;
-import com.medkha.familyTree.entity.builder.PersonBuilder;
-import com.medkha.familyTree.repository.FamilyRepository;
-import com.medkha.familyTree.repository.PersonRepository;
 
 @SpringBootApplication
 public class FamilyTreeApplication {

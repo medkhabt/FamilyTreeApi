@@ -14,8 +14,10 @@ import javax.persistence.Transient;
 import com.medkha.familyTree.entity.composite.ICoupleComposite;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity
 public class Couple implements ICoupleComposite{
 	/**

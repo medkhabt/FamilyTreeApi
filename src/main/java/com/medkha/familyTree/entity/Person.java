@@ -31,10 +31,9 @@ public class Person implements ICoupleComposite{
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
-	private LocalDate birthdate; 
-	private String birthplace; 
-	private LocalDate deathDate; 
-	private String deathPlace; 
+	private BirthInformation birthInformation; 
+	private DeathInformation deathInformation; 
+
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	/**
@@ -64,16 +63,26 @@ public class Person implements ICoupleComposite{
 		 
 	}
 	
-	public Person(Long id, String firstName, String lastName, Gender gender, LocalDate birthdate, String birthplace,
-			LocalDate deathDate, String deathPlace, String spacing, ICoupleComposite root) {
+
+	public Person(Long id, String firstName, String lastName, Gender gender, BirthInformation birthInformation,
+					String spacing, ICoupleComposite root) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
-		this.birthdate = birthdate;
-		this.birthplace = birthplace;
-		this.deathDate = deathDate;
-		this.deathPlace = deathPlace;
+		this.birthInformation = birthInformation; 
+		this.spacing = spacing;
+		this.root = root;
+	}
+	
+	public Person(Long id, String firstName, String lastName, Gender gender, BirthInformation birthInformation,
+			DeathInformation deathInformation,  String spacing, ICoupleComposite root) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.birthInformation = birthInformation; 
+		this.deathInformation = deathInformation; 
 		this.spacing = spacing;
 		this.root = root;
 	}
@@ -174,37 +183,34 @@ public class Person implements ICoupleComposite{
 		this.gender = gender;
 	}
 
-	public LocalDate getBirthdate() {
-		return birthdate;
+
+	public BirthInformation getBirthInformation() {
+		return birthInformation;
 	}
 
-	public void setBirthdate(LocalDate birthdate) {
-		this.birthdate = birthdate;
+	public void setBirthInformation(BirthInformation birthInformation) {
+		this.birthInformation = birthInformation;
 	}
 
-	public String getBirthplace() {
-		return birthplace;
+	public Date getCreatedOn() {
+		return createdOn;
 	}
 
-	public void setBirthplace(String birthplace) {
-		this.birthplace = birthplace;
+	public Date getLastModified() {
+		return lastModified;
 	}
 
-	public LocalDate getDeathDate() {
-		return deathDate;
+	
+
+	public DeathInformation getDeathInformation() {
+		return deathInformation;
 	}
 
-	public void setDeathDate(LocalDate deathDate) {
-		this.deathDate = deathDate;
+
+	public void setDeathInformation(DeathInformation deathInformation) {
+		this.deathInformation = deathInformation;
 	}
 
-	public String getDeathPlace() {
-		return deathPlace;
-	}
-
-	public void setDeathPlace(String deathPlace) {
-		this.deathPlace = deathPlace;
-	}
 
 	public ICoupleComposite getRoot() {
 		return root;

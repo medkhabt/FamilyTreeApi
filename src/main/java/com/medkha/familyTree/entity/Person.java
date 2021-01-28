@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.medkha.familyTree.Constants;
 import com.medkha.familyTree.entity.composite.ICoupleComposite;
 
 
@@ -22,7 +23,7 @@ import com.medkha.familyTree.entity.composite.ICoupleComposite;
 public class Person implements ICoupleComposite{
 	
 	@Id
-	@GeneratedValue(generator = "'ID_GENERATOR")
+	@GeneratedValue(generator = Constants.ID_GENERATOR)
 	private Long id; 
 	private String firstName; 
 	private String lastName; 

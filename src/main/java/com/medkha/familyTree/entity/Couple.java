@@ -11,6 +11,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.medkha.familyTree.Constants;
 import com.medkha.familyTree.entity.composite.ICoupleComposite;
 
 import lombok.Data;
@@ -26,7 +27,7 @@ public class Couple implements ICoupleComposite{
 	 * (considerate different)
 	 */
 	@Id
-	@GeneratedValue(generator = "'ID_GENERATOR")
+	@GeneratedValue(generator = Constants.ID_GENERATOR)
 	private Long id; 
 	
 	@Temporal(TemporalType.TIMESTAMP)

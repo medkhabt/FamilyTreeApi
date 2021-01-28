@@ -4,20 +4,17 @@ import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.medkha.familyTree.entity.composite.ICoupleComposite;
 
-import lombok.Data;
 
-@Data
 
 @Entity
 public class Person implements ICoupleComposite{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "'ID_GENERATOR")
 	private Long id; 
 	private String firstName; 
 	private String lastName; 
@@ -34,9 +31,7 @@ public class Person implements ICoupleComposite{
 	public Person() {
 		 
 	}
-
 	
-
 	public Person(Long id, String firstName, String lastName, Gender gender, LocalDate birthdate, String birthplace,
 			LocalDate deathDate, String deathPlace, String spacing, ICoupleComposite root) {
 		this.id = id;
@@ -110,6 +105,85 @@ public class Person implements ICoupleComposite{
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	@Override
+	public String getSpacing() {
+		return this.spacing;
+	}
+
+	@Override
+	public void setSpacing(String spacing) {
+		this.spacing = spacing; 
+		
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(LocalDate birthdate) {
+		this.birthdate = birthdate;
+	}
+
+	public String getBirthplace() {
+		return birthplace;
+	}
+
+	public void setBirthplace(String birthplace) {
+		this.birthplace = birthplace;
+	}
+
+	public LocalDate getDeathDate() {
+		return deathDate;
+	}
+
+	public void setDeathDate(LocalDate deathDate) {
+		this.deathDate = deathDate;
+	}
+
+	public String getDeathPlace() {
+		return deathPlace;
+	}
+
+	public void setDeathPlace(String deathPlace) {
+		this.deathPlace = deathPlace;
+	}
+
+	public ICoupleComposite getRoot() {
+		return root;
+	}
+
+	public void setRoot(ICoupleComposite root) {
+		this.root = root;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 

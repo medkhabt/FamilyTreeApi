@@ -20,7 +20,7 @@ public class Couple implements ICoupleComposite{
 	 * (considerate different)
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "'ID_GENERATOR")
 	private Long id; 
 	private Set<ICoupleComposite> children;
 	private ICoupleComposite root; 

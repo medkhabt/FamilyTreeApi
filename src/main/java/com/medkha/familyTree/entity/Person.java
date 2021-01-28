@@ -1,10 +1,18 @@
 package com.medkha.familyTree.entity;
 
 import java.time.LocalDate;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import com.medkha.familyTree.entity.composite.ICoupleComposite;
 
@@ -18,12 +26,36 @@ public class Person implements ICoupleComposite{
 	private Long id; 
 	private String firstName; 
 	private String lastName; 
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
+	
 	private LocalDate birthdate; 
 	private String birthplace; 
 	private LocalDate deathDate; 
 	private String deathPlace; 
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	/**
+	 * that insertable = false, block CreationTimestamp from setting the createdOn Date value. 
+	 */
+	/**
+	 * test it with Generated on insert.  
+	 */
+	@Column(/* TODO test with this => insertable = false ,*/ updatable = false)
+	@org.hibernate.annotations.CreationTimestamp
+	private Date createdOn; 
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(insertable = false, updatable = false)
+	@org.hibernate.annotations.Generated(
+			org.hibernate.annotations.GenerationTime.ALWAYS 
+			)
+
+	private Date lastModified; 
+	
+	@Transient
 	private String spacing; 
 	
 	private ICoupleComposite root; 

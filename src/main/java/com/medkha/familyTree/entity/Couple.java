@@ -1,11 +1,15 @@
 package com.medkha.familyTree.entity;
 
+import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.medkha.familyTree.entity.composite.ICoupleComposite;
 
@@ -22,6 +26,26 @@ public class Couple implements ICoupleComposite{
 	@Id
 	@GeneratedValue(generator = "'ID_GENERATOR")
 	private Long id; 
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	/**
+	 * that insertable = false, block CreationTimestamp from setting the createdOn Date value. 
+	 */
+	/**
+	 * test it with Generated on insert.  
+	 */
+	@Column(/* TODO test with this => insertable = false ,*/ updatable = false)
+	@org.hibernate.annotations.CreationTimestamp
+	private Date createdOn; 
+	
+	@Temporal(TemporalType.TIMESTAMP) // TIMESTAMP IS BY DEFAULT IN HIBERNATE, @Temporal is required in jpa. 
+	@Column(insertable = false, updatable = false)
+	@org.hibernate.annotations.Generated(
+			org.hibernate.annotations.GenerationTime.ALWAYS 
+			)
+
+	private Date lastModified; 
+	
 	private Set<ICoupleComposite> children;
 	private ICoupleComposite root; 
 	private ICoupleComposite realChild;
@@ -29,7 +53,15 @@ public class Couple implements ICoupleComposite{
 	 * TODO maybe keep track of divorced couples in further versions.
 	 */
 	private Set<ICoupleComposite> partners; 
+	
+	
+	
+	@Transient
 	private String spacing;
+	
+	
+	
+	
 	
 	public Couple(ICoupleComposite root, ICoupleComposite realChild, Set<ICoupleComposite> partners) {
 		super();

@@ -8,9 +8,9 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class DeathInformation {
 
-	@Column()
+	@Column(nullable = true)
 	private LocalDate deathDate;
-	@Column(length = 255)
+	@Column(length = 255, nullable = true)
 	private String deathPlace;
 	
 	

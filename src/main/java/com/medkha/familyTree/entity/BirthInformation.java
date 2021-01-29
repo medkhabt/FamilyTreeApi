@@ -10,33 +10,33 @@ import javax.persistence.Embeddable;
 public class BirthInformation {
 	
 	@Column(nullable = false)
-	private LocalDate birthdate;
+	private LocalDate birthDate;
 	@Column(nullable = false, length = 255)
-	private String birthplace;
+	private String birthPlace;
 	
 	protected BirthInformation() { 
 		
 	}
 	
-	public BirthInformation(LocalDate birthdate, String birthplace) {
-		this.birthdate = birthdate; 
-		this.birthplace = birthplace; 
+	public BirthInformation(LocalDate birthDate, String birthPlace) {
+		this.birthDate = birthDate; 
+		this.birthPlace = birthPlace; 
 	}
 
-	public LocalDate getBirthdate() {
-		return birthdate;
+	public LocalDate getBirthDate() {
+		return birthDate;
 	}
 
-	public void setBirthdate(LocalDate birthdate) {
-		this.birthdate = birthdate;
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
 	}
 
-	public String getBirthplace() {
-		return birthplace;
+	public String getBirthPlace() {
+		return birthPlace;
 	}
 
-	public void setBirthplace(String birthplace) {
-		this.birthplace = birthplace;
+	public void setBirthPlace(String birthPlace) {
+		this.birthPlace = birthPlace;
 	}
 	
 	

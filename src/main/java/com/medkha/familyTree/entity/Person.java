@@ -8,7 +8,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.constraints.NotNull;
 
 import com.medkha.familyTree.entity.composite.CoupleComposite;
-import com.medkha.familyTree.entity.composite.ICoupleComposite;
 
 
 
@@ -31,7 +30,7 @@ public class Person extends CoupleComposite{
 	
 	
 	
-	private ICoupleComposite parentCouple; 
+	
 
 	public Person() {
 		 super(); 
@@ -39,7 +38,7 @@ public class Person extends CoupleComposite{
 	
 
 	public Person(String firstName, String lastName, Gender gender, BirthInformation birthInformation,
-					ICoupleComposite aParentCouple) {
+					CoupleComposite aParentCouple) {
 		super(); 
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -49,7 +48,7 @@ public class Person extends CoupleComposite{
 	}
 	
 	public Person(String firstName, String lastName, Gender gender, BirthInformation birthInformation,
-			DeathInformation deathInformation, ICoupleComposite aParentCouple) {
+			DeathInformation deathInformation, CoupleComposite aParentCouple) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
@@ -66,15 +65,6 @@ public class Person extends CoupleComposite{
 
 	
 
-	@Override
-	public ICoupleComposite getParents() {
-		return this.getParentCouple();
-	}
-
-	@Override
-	public void setParents(ICoupleComposite aParentCouple) {
-		this.setParentCouple(aParentCouple);; 
-	}
 	
 	
 
@@ -129,17 +119,17 @@ public class Person extends CoupleComposite{
 	}
 
 
-	public ICoupleComposite getParentCouple() {
+	public CoupleComposite getParentCouple() {
 		return this.parentCouple;
 	}
 
-	public void setParentCouple(ICoupleComposite aParentCouple) {
+	public void setParentCouple(CoupleComposite aParentCouple) {
 		this.parentCouple = aParentCouple;
 	}
 
 
 	@Override
-	public ICoupleComposite getParentsChild() {
+	public CoupleComposite getParentsChild() {
 		return this;
 	}
 

@@ -17,11 +17,14 @@ import com.medkha.familyTree.Constants;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class CoupleComposite implements ICoupleComposite{
+public abstract class CoupleComposite  {
 	
 	@Id
 	@GeneratedValue(generator = Constants.ID_GENERATOR)
-	Long id; 
+	protected Long id; 
+	
+	@Transient
+	protected CoupleComposite parentCouple; 
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	/**
@@ -46,17 +49,25 @@ public abstract class CoupleComposite implements ICoupleComposite{
 	@Transient
 	private String spacing;
 	
-	public abstract ICoupleComposite getParentsChild(); 
+	public abstract CoupleComposite getParentsChild(); 
 //	public Set<ICoupleComposite> getSiblings(); 
-	public abstract ICoupleComposite getParents(); 
-	public abstract void setParents(ICoupleComposite aParentCouple); 
-	 
+	
 	
 	public CoupleComposite() {
 		
 	}
 	
 	
+	public CoupleComposite getParentCouple() {
+		return parentCouple;
+	}
+
+
+	public void setParentCouple(CoupleComposite parentCouple) {
+		this.parentCouple = parentCouple;
+	}
+
+
 	public Date getCreatedOn() {
 		return createdOn;
 	}

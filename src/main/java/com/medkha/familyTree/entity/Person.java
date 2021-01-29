@@ -129,7 +129,7 @@ public class Person extends CoupleComposite{
 
 
 	@Override
-	public CoupleComposite getParentsChild() {
+	public Person getParentsChild() {
 		return this;
 	}
 

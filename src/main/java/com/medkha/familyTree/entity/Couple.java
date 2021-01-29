@@ -2,7 +2,11 @@ package com.medkha.familyTree.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Transient;
 
@@ -13,25 +17,31 @@ import com.medkha.familyTree.entity.composite.CoupleComposite;
 @PrimaryKeyJoinColumn(name = "COUPLE_ID")
 public class Couple extends CoupleComposite{
 	
-	@Transient
+	@OneToMany(mappedBy = "parentCouple",
+			   fetch = FetchType.LAZY,
+			   cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<CoupleComposite> children;
-	@Transient
-	private CoupleComposite parentsChild; // theChildOfTheParent
+	@OneToOne(
+			fetch = FetchType.LAZY, 
+			optional = false , // if optional = true, as we have unique column ( we can have null for only one instance )  
+			cascade = CascadeType.PERSIST
+			)
+	private Person parentsChild; // theChildOfTheParent
 	/**
 	 * TODO maybe keep track of divorced couples in further versions.
 	 */
-	@Transient
+	@Transient /*ManyToMany*/
 	private Set<CoupleComposite> partners; 
 	
 	
-	public Couple(CoupleComposite aParentCouple, CoupleComposite parentsChild, Set<CoupleComposite> partners) {
+	public Couple(CoupleComposite aParentCouple, Person parentsChild, Set<CoupleComposite> partners) {
 		super();
 		this.parentCouple = aParentCouple;
 		this.parentsChild = parentsChild;
 		this.partners = partners;
 	}
 	
-	public Couple(CoupleComposite parentsChild, Set<CoupleComposite> partners) {
+	public Couple(Person parentsChild, Set<CoupleComposite> partners) {
 		super();
 		this.parentCouple = new Person("root"); 
 		this.parentsChild = parentsChild;
@@ -62,7 +72,7 @@ public class Couple extends CoupleComposite{
 		this.partners = partners;
 	}
 
-	public void setParentsChild(CoupleComposite parentsChild) {
+	public void setParentsChild(Person parentsChild) {
 		this.parentsChild = parentsChild;
 	}
 
@@ -92,7 +102,7 @@ public class Couple extends CoupleComposite{
 
 
 	@Override
-	public CoupleComposite getParentsChild() {
+	public Person getParentsChild() {
 		return this.parentsChild;
 	}
 

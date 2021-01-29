@@ -3,10 +3,10 @@ package com.medkha.familyTree.entity.composite;
 import java.util.Set;
 
 public interface ICoupleComposite {
-	public ICoupleComposite getRealChild(); 
+	public ICoupleComposite getParentsChild(); 
 //	public Set<ICoupleComposite> getSiblings(); 
 	public ICoupleComposite getParents(); 
-	public void setParents(ICoupleComposite root); 
+	public void setParents(ICoupleComposite aParentCouple); 
 	 
 	public boolean equals(Object cc); 
 	public int hashCode();

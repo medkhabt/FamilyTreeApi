@@ -58,7 +58,7 @@ public class Person implements ICoupleComposite{
 	@Transient
 	private String spacing; 
 	
-	private ICoupleComposite root; 
+	private ICoupleComposite parentCouple; 
 
 	public Person() {
 		 
@@ -66,18 +66,18 @@ public class Person implements ICoupleComposite{
 	
 
 	public Person(Long id, String firstName, String lastName, Gender gender, BirthInformation birthInformation,
-					String spacing, ICoupleComposite root) {
+					String spacing, ICoupleComposite aParentCouple) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.birthInformation = birthInformation; 
 		this.spacing = spacing;
-		this.root = root;
+		this.parentCouple = aParentCouple;
 	}
 	
 	public Person(Long id, String firstName, String lastName, Gender gender, BirthInformation birthInformation,
-			DeathInformation deathInformation,  String spacing, ICoupleComposite root) {
+			DeathInformation deathInformation,  String spacing, ICoupleComposite aParentCouple) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -85,7 +85,7 @@ public class Person implements ICoupleComposite{
 		this.birthInformation = birthInformation; 
 		this.deathInformation = deathInformation; 
 		this.spacing = spacing;
-		this.root = root;
+		this.parentCouple = aParentCouple;
 	}
 
 	public Person(Long i, String string) {
@@ -94,21 +94,17 @@ public class Person implements ICoupleComposite{
 		this.lastName = string; 
 	}
 
-	@Override
-	public ICoupleComposite getRealChild() {
-		return this;
-	}
 
 	
 
 	@Override
 	public ICoupleComposite getParents() {
-		return this.root;
+		return this.getParentCouple();
 	}
 
 	@Override
-	public void setParents(ICoupleComposite root) {
-		this.root = root; 
+	public void setParents(ICoupleComposite aParentCouple) {
+		this.setParentCouple(aParentCouple);; 
 	}
 	
 	
@@ -213,16 +209,22 @@ public class Person implements ICoupleComposite{
 	}
 
 
-	public ICoupleComposite getRoot() {
-		return root;
+	public ICoupleComposite getParentCouple() {
+		return this.parentCouple;
 	}
 
-	public void setRoot(ICoupleComposite root) {
-		this.root = root;
+	public void setParentCouple(ICoupleComposite aParentCouple) {
+		this.parentCouple = aParentCouple;
 	}
 
 	public Long getId() {
 		return id;
+	}
+
+
+	@Override
+	public ICoupleComposite getParentsChild() {
+		return this;
 	}
 
 

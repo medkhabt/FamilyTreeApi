@@ -50,8 +50,8 @@ public class Couple implements ICoupleComposite{
 	private Date lastModified; 
 	
 	private Set<ICoupleComposite> children;
-	private ICoupleComposite root; 
-	private ICoupleComposite realChild;
+	private ICoupleComposite parentCouple; 
+	private ICoupleComposite parentsChild; // theChildOfTheParent
 	/**
 	 * TODO maybe keep track of divorced couples in further versions.
 	 */
@@ -66,17 +66,17 @@ public class Couple implements ICoupleComposite{
 	
 	
 	
-	public Couple(ICoupleComposite root, ICoupleComposite realChild, Set<ICoupleComposite> partners) {
+	public Couple(ICoupleComposite aParentCouple, ICoupleComposite parentsChild, Set<ICoupleComposite> partners) {
 		super();
-		this.root = root;
-		this.realChild = realChild;
+		this.parentCouple = aParentCouple;
+		this.parentsChild = parentsChild;
 		this.partners = partners;
 	}
 	
-	public Couple(ICoupleComposite realChild, Set<ICoupleComposite> partners) {
+	public Couple(ICoupleComposite parentsChild, Set<ICoupleComposite> partners) {
 		super();
-		this.root = new Person((long) 0,"root"); 
-		this.realChild = realChild;
+		this.parentCouple = new Person((long) 0,"root"); 
+		this.parentsChild = parentsChild;
 		this.partners = partners;
 	}
 	
@@ -90,12 +90,12 @@ public class Couple implements ICoupleComposite{
 
 	@Override
 	public ICoupleComposite getParents() {
-		return this.root;
+		return this.getParentCouple();
 	}
 
 	@Override
-	public void setParents(ICoupleComposite root) {
-		this.root = root; 
+	public void setParents(ICoupleComposite aParentCouple) {
+		this.setParentCouple(aParentCouple);; 
 	}
 
 	@Override
@@ -134,6 +134,11 @@ public class Couple implements ICoupleComposite{
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	@Override
+	public ICoupleComposite getParentsChild() {
+		return this.parentsChild;
 	}
 	
 	

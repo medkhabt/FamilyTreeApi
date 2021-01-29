@@ -1,53 +1,17 @@
 package com.medkha.familyTree.entity;
 
-import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.PrimaryKeyJoinColumn;
 
-import com.medkha.familyTree.Constants;
+import com.medkha.familyTree.entity.composite.CoupleComposite;
 import com.medkha.familyTree.entity.composite.ICoupleComposite;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
 @Entity
-public class Couple implements ICoupleComposite{
-	/**
-	 * will have an issue with the person entity, as i think of it as 
-	 * they are the same, but here to instances may have the same id.
-	 * (considerate different)
-	 */
-	@Id
-	@GeneratedValue(generator = Constants.ID_GENERATOR)
-	private Long id; 
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	/**
-	 * that insertable = false, block CreationTimestamp from setting the createdOn Date value. 
-	 */
-	/**
-	 * test it with Generated on insert.  
-	 */
-	@Column(/* TODO test with this => insertable = false ,*/ updatable = false)
-	@org.hibernate.annotations.CreationTimestamp
-	private Date createdOn; 
-	
-	@Temporal(TemporalType.TIMESTAMP) // TIMESTAMP IS BY DEFAULT IN HIBERNATE, @Temporal is required in jpa. 
-	@Column(insertable = false, updatable = false)
-	@org.hibernate.annotations.Generated(
-			org.hibernate.annotations.GenerationTime.ALWAYS 
-			)
-
-	private Date lastModified; 
+@PrimaryKeyJoinColumn(name = "COUPLE_ID")
+public class Couple extends CoupleComposite{
 	
 	private Set<ICoupleComposite> children;
 	private ICoupleComposite parentCouple; 
@@ -56,14 +20,6 @@ public class Couple implements ICoupleComposite{
 	 * TODO maybe keep track of divorced couples in further versions.
 	 */
 	private Set<ICoupleComposite> partners; 
-	
-	
-	
-	@Transient
-	private String spacing;
-	
-	
-	
 	
 	
 	public Couple(ICoupleComposite aParentCouple, ICoupleComposite parentsChild, Set<ICoupleComposite> partners) {
@@ -75,11 +31,39 @@ public class Couple implements ICoupleComposite{
 	
 	public Couple(ICoupleComposite parentsChild, Set<ICoupleComposite> partners) {
 		super();
-		this.parentCouple = new Person((long) 0,"root"); 
+		this.parentCouple = new Person("root"); 
 		this.parentsChild = parentsChild;
 		this.partners = partners;
 	}
 	
+	public Set<ICoupleComposite> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<ICoupleComposite> children) {
+		this.children = children;
+	}
+
+	public ICoupleComposite getParentCouple() {
+		return parentCouple;
+	}
+
+	public void setParentCouple(ICoupleComposite parentCouple) {
+		this.parentCouple = parentCouple;
+	}
+
+	public Set<ICoupleComposite> getPartners() {
+		return partners;
+	}
+
+	public void setPartners(Set<ICoupleComposite> partners) {
+		this.partners = partners;
+	}
+
+	public void setParentsChild(ICoupleComposite parentsChild) {
+		this.parentsChild = parentsChild;
+	}
+
 	public void addChild(ICoupleComposite child) {
 		this.children.add(child);
 	}
@@ -100,10 +84,10 @@ public class Couple implements ICoupleComposite{
 
 	@Override
 	public String show() {
-		String msgBoxWithChildren = spacing; 
+		String msgBoxWithChildren = this.getSpacing(); 
 		if(!this.children.isEmpty()) { 
 			for(ICoupleComposite child: children) {
-				child.setSpacing(spacing + "\t");
+				child.setSpacing(this.getSpacing() + "\t");
 				msgBoxWithChildren += "\n"+ child.getSpacing()+ child.show();
 				
 			}
@@ -111,35 +95,12 @@ public class Couple implements ICoupleComposite{
 		return toString() + msgBoxWithChildren ;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Couple other = (Couple) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
 
 	@Override
 	public ICoupleComposite getParentsChild() {
 		return this.parentsChild;
 	}
+
 	
 	
 	

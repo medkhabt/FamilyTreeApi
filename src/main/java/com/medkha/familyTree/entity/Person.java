@@ -9,6 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.medkha.familyTree.entity.composite.CoupleComposite;
@@ -28,11 +29,15 @@ public class Person extends CoupleComposite{
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
+	@Valid
+	@NotNull
 	private BirthInformation birthInformation; 
+	
+	@Valid
 	private DeathInformation deathInformation; 
 
 	@OneToMany(mappedBy = "partner")
-	private Set<Couple> actualCouplesEngagedIn = new HashSet<>(); 
+	private Set<@Valid @NotNull Couple> actualCouplesEngagedIn = new HashSet<>(); 
 	
 	
 	

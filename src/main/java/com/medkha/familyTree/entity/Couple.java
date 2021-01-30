@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.persistence.JoinColumn;
 
 import com.medkha.familyTree.entity.composite.CoupleComposite;
@@ -23,12 +25,13 @@ public class Couple extends CoupleComposite{
 	@OneToMany(mappedBy = "parentCouple",
 			   fetch = FetchType.LAZY,
 			   cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private Set<CoupleComposite> children = new HashSet<>();
+	private Set<@Valid @NotNull CoupleComposite> children = new HashSet<>();
 	@OneToOne(
 			fetch = FetchType.LAZY, 
 			optional = false , // if optional = true, as we have unique column ( we can have null for only one instance )  
 			cascade = CascadeType.PERSIST
 			)
+	@Valid
 	private Person parentsChild; // theChildOfTheParent
 	/**
 	 * TODO maybe keep track of divorced couples in further versions.
@@ -43,6 +46,7 @@ public class Couple extends CoupleComposite{
 			inverseJoinColumns = 
 				@JoinColumn(name = "PERSON_ID", nullable = false)
 			)
+	@Valid
 	private Person partner; 
 	
 	

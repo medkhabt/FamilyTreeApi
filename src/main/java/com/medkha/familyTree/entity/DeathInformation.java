@@ -4,11 +4,13 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.PastOrPresent;
 
 @Embeddable
 public class DeathInformation {
 
 	@Column(nullable = true)
+	@PastOrPresent
 	private LocalDate deathDate;
 	@Column(length = 255, nullable = true)
 	private String deathPlace;

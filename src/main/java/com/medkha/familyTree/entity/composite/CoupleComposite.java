@@ -68,7 +68,7 @@ public abstract class CoupleComposite  {
 	}
 
 
-	public void setParentCouple(CoupleComposite parentCouple) {
+	public void setParentCouple( CoupleComposite parentCouple) {
 		this.parentCouple = parentCouple;
 	}
 

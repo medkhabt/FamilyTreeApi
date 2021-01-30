@@ -1,14 +1,17 @@
 package com.medkha.familyTree.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Transient;
+import javax.persistence.JoinColumn;
 
 import com.medkha.familyTree.entity.composite.CoupleComposite;
 
@@ -20,7 +23,7 @@ public class Couple extends CoupleComposite{
 	@OneToMany(mappedBy = "parentCouple",
 			   fetch = FetchType.LAZY,
 			   cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private Set<CoupleComposite> children;
+	private Set<CoupleComposite> children = new HashSet<>();
 	@OneToOne(
 			fetch = FetchType.LAZY, 
 			optional = false , // if optional = true, as we have unique column ( we can have null for only one instance )  
@@ -29,23 +32,32 @@ public class Couple extends CoupleComposite{
 	private Person parentsChild; // theChildOfTheParent
 	/**
 	 * TODO maybe keep track of divorced couples in further versions.
+	 *  - One couple has One partnership 
+	 *  - One Person can have multiple couples ( partners aka polygamy) 
 	 */
-	@Transient /*ManyToMany*/
-	private Set<CoupleComposite> partners; 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "COUPLE_PERSON",
+			joinColumns = 
+				@JoinColumn(name = "COUPLE_ID"),
+			inverseJoinColumns = 
+				@JoinColumn(name = "PERSON_ID", nullable = false)
+			)
+	private Person partner; 
 	
 	
-	public Couple(CoupleComposite aParentCouple, Person parentsChild, Set<CoupleComposite> partners) {
+	public Couple(CoupleComposite aParentCouple, Person parentsChild, Person partner) {
 		super();
 		this.parentCouple = aParentCouple;
 		this.parentsChild = parentsChild;
-		this.partners = partners;
+		this.partner = partner;
 	}
 	
-	public Couple(Person parentsChild, Set<CoupleComposite> partners) {
+	public Couple(Person parentsChild, Person partner) {
 		super();
 		this.parentCouple = new Person("root"); 
 		this.parentsChild = parentsChild;
-		this.partners = partners;
+		this.partner = partner;
 	}
 	
 	public Set<CoupleComposite> getChildren() {
@@ -64,12 +76,12 @@ public class Couple extends CoupleComposite{
 		this.parentCouple = parentCouple;
 	}
 
-	public Set<CoupleComposite> getPartners() {
-		return partners;
+	public Person getPartners() {
+		return partner;
 	}
 
-	public void setPartners(Set<CoupleComposite> partners) {
-		this.partners = partners;
+	public void setPartners(Person partner) {
+		this.partner = partner;
 	}
 
 	public void setParentsChild(Person parentsChild) {

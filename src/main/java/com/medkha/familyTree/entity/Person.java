@@ -4,9 +4,11 @@ package com.medkha.familyTree.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.Valid;
@@ -36,13 +38,15 @@ public class Person extends CoupleComposite{
 	@Valid
 	private DeathInformation deathInformation; 
 
-	@OneToMany(mappedBy = "partner")
-	private Set<@Valid @NotNull Couple> actualCouplesEngagedIn = new HashSet<>(); 
+	@OneToMany(	mappedBy = "partner",
+				fetch = FetchType.LAZY,
+				cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<@Valid Couple> actualCouplesEngagedIn = new HashSet<>(); 
 	
 	
 	
 
-	public Person() {
+	protected Person() {
 		 super(); 
 	}
 	
@@ -153,6 +157,16 @@ public class Person extends CoupleComposite{
 	public Person getParentsChild() {
 		return this;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Person [firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
+				+ ", birthInformation=" + birthInformation + ", deathInformation=" + deathInformation + "]";
+	}
+	
+	
+	
 
 
 

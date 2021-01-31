@@ -49,6 +49,7 @@ public class Couple extends CoupleComposite{
 	@Valid
 	private Person partner; 
 	
+	protected Couple() {}
 	
 	public Couple(CoupleComposite aParentCouple, Person parentsChild, Person partner) {
 		super();
@@ -59,7 +60,7 @@ public class Couple extends CoupleComposite{
 	
 	public Couple(Person parentsChild, Person partner) {
 		super();
-		this.parentCouple = new Person("root"); 
+		this.parentCouple = null; 
 		this.parentsChild = parentsChild;
 		this.partner = partner;
 	}
@@ -115,7 +116,14 @@ public class Couple extends CoupleComposite{
 		}
 		return toString() + msgBoxWithChildren ;
 	}
+	
+	
 
+	@Override
+	public String toString() {
+		return "Couple [parentsChild=" + parentsChild.getFirstName() + " " + parentsChild.getLastName() 
+		+ ", partner=" + partner.getFirstName() + " " + partner.getLastName() + "]";
+	}
 
 	@Override
 	public Person getParentsChild() {

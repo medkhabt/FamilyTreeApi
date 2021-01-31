@@ -28,7 +28,7 @@ public abstract class CoupleComposite  {
 	protected Long id; 
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "COUPLE_PARENTS_ID", nullable = false)
+	@JoinColumn(name = "COUPLE_PARENTS_ID")
 	protected CoupleComposite parentCouple; 
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -38,18 +38,17 @@ public abstract class CoupleComposite  {
 	/**
 	 * test it with Generated on insert.  
 	 */
-	@NotNull
 	@Column(/* TODO test with this => insertable = false ,*/ updatable = false)
 	@org.hibernate.annotations.CreationTimestamp
 	private Date createdOn; 
 	
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP) // TIMESTAMP IS BY DEFAULT IN HIBERNATE, @Temporal is required in jpa. 
-	@Column(insertable = false, updatable = false)
-	@org.hibernate.annotations.Generated(
-			org.hibernate.annotations.GenerationTime.ALWAYS 
-			)
-	private Date lastModified;
+//	@NotNull
+//	@Temporal(TemporalType.TIMESTAMP) // TIMESTAMP IS BY DEFAULT IN HIBERNATE, @Temporal is required in jpa. 
+//	@Column(insertable = false, updatable = false)
+//	@org.hibernate.annotations.Generated(
+//			org.hibernate.annotations.GenerationTime.ALWAYS 
+//			)
+//	private Date lastModified;
 	
 	@Transient
 	private String spacing;
@@ -76,9 +75,9 @@ public abstract class CoupleComposite  {
 	public Date getCreatedOn() {
 		return createdOn;
 	}
-	public Date getLastModified() {
-		return lastModified;
-	}
+//	public Date getLastModified() {
+//		return lastModified;
+//	}
 	public Long getId() { 
 		return this.id; 
 	}

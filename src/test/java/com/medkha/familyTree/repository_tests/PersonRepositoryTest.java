@@ -1,6 +1,7 @@
 package com.medkha.familyTree.repository_tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -29,6 +32,9 @@ import com.medkha.familyTree.entity.composite.CoupleComposite;
 import com.medkha.familyTree.repository.CoupleRepository;
 import com.medkha.familyTree.repository.PersonRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class PersonRepositoryTest {
@@ -130,7 +136,100 @@ public class PersonRepositoryTest {
 		
 	}
 	
+	@Test
+	@Transactional
+	public void should_RetValidParents_When_ChildIsCreated() {
+		// given
+		
+		Couple grandCouple = new Couple(this.grandFather.getParentsChild(), this.grandMother.getParentsChild()); 
+		this.grandFather.getParentsChild().getActualCouplesEngagedIn().add(grandCouple); 
+		this.grandMother.getParentsChild().getActualCouplesEngagedIn().add(grandCouple); 
+		
+		grandCouple = coupleRepo.save(grandCouple); 
+		
+		CoupleComposite medReda = new Person(
+				"Mohamed Reda", 
+				"LOUKHNATI", 
+				Gender.MALE, 
+				new BirthInformation(
+						LocalDate.of(2001, 04, 02),
+						"Agadir"
+				),
+				grandCouple
+			); 
+		// when 
+		
+		medReda = personRepo.save(medReda); 
+		
+		// then
+		
+		assertEquals(grandCouple,medReda.getParentCouple()); 
+	}
 	
+	@Test
+	@Transactional
+	void shouldRetValidName_When_ModifyName() { 
+		// given 
+		
+		// when
+		
+		this.grandFather.getParentsChild().setFirstName("Mohamed");
+		this.grandFather = personRepo.save(this.grandFather); 
+		
+		
+		assertTrue(
+				personRepo
+					.findById(this.grandFather.getId()).get()
+						.getParentsChild()
+							.getFirstName().equals("Mohamed")); 
+	}
 	
+	@Test
+	@Transactional
+	void shouldBeEmpty_When_DeleteOnlyCouple() {
+		// given 
+		
+		Couple grandCouple = new Couple(this.grandFather.getParentsChild(), this.grandMother.getParentsChild()); 
+		this.grandFather.getParentsChild().getActualCouplesEngagedIn().add(grandCouple); 
+		this.grandMother.getParentsChild().getActualCouplesEngagedIn().add(grandCouple); 
+		
+		final Couple newGrandCouple = coupleRepo.save(grandCouple); 
+		
+		
+		
+		
+
+		
+		
+		// when 
+		this.grandFather = personRepo.findById(this.grandFather.getId()).get();
+		this.grandMother= personRepo.findById(this.grandMother.getId()).get();
+//	
+		
+		personRepo.save(this.grandFather);
+		personRepo.save(this.grandMother);
+		
+		
+		
+		coupleRepo.deleteById(grandCouple.getId());
+	
+		for(Couple couple : this.grandFather.getParentsChild().getActualCouplesEngagedIn()) {
+			if(couple.equals(newGrandCouple)) {
+				this.grandFather.getParentsChild().getActualCouplesEngagedIn().remove(couple);
+				this.grandMother.getParentsChild().getActualCouplesEngagedIn().remove(couple);
+			}
+		}
+		
+//		personRepo.removeCouple(newGrandCouple);
+		
+		personRepo.findById(this.grandFather.getId()).get().getParentsChild().getActualCouplesEngagedIn()
+			.forEach((couple) -> log.info(couple.toString()));
+				
+		
+		// then 
+		
+		assertTrue(personRepo.findById(this.grandFather.getId()).get().getParentsChild().getActualCouplesEngagedIn().isEmpty()); 
+		assertNull(coupleRepo.findById(newGrandCouple.getId()).orElse(null)); 
+	}
 	
 }

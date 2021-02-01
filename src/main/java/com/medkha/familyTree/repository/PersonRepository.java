@@ -2,7 +2,13 @@ package com.medkha.familyTree.repository;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface PersonRepository extends CoupleCompositeRepository{
+import com.medkha.familyTree.entity.composite.CoupleComposite;
 
+@Repository
+public interface PersonRepository extends CoupleCompositeRepository, CustomPersonRepository{
+	@SuppressWarnings("unchecked")
+	@Override
+	default CoupleComposite save(CoupleComposite person) { 
+		return saveSafely(person.getParentsChild()); 
+	}
 }

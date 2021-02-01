@@ -81,11 +81,11 @@ public class Couple extends CoupleComposite{
 		this.parentCouple = parentCouple;
 	}
 
-	public Person getPartners() {
+	public Person getPartner() {
 		return partner;
 	}
 
-	public void setPartners(Person partner) {
+	public void setPartner(Person partner) {
 		this.partner = partner;
 	}
 
@@ -128,6 +128,37 @@ public class Couple extends CoupleComposite{
 	@Override
 	public Person getParentsChild() {
 		return this.parentsChild;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((parentsChild == null) ? 0 : parentsChild.hashCode());
+		result = prime * result + ((partner == null) ? 0 : partner.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Couple other = (Couple) obj;
+		if (parentsChild == null) {
+			if (other.parentsChild != null)
+				return false;
+		} else if (!parentsChild.equals(other.parentsChild))
+			return false;
+		if (partner == null) {
+			if (other.partner != null)
+				return false;
+		} else if (!partner.equals(other.partner))
+			return false;
+		return true;
 	}
 
 

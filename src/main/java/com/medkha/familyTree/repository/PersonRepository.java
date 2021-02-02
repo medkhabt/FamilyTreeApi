@@ -11,4 +11,9 @@ public interface PersonRepository extends CoupleCompositeRepository, CustomPerso
 	default CoupleComposite save(CoupleComposite person) { 
 		return saveSafely(person.getParentsChild()); 
 	}
+	
+	@Override
+	default void deleteById(Long id) {
+		deleteByIdSafely(id);
+	}
 }

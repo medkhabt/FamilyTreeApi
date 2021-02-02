@@ -1,8 +1,21 @@
 package com.medkha.familyTree;
 
 
+import java.time.LocalDate;
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.medkha.familyTree.entity.BirthInformation;
+import com.medkha.familyTree.entity.Couple;
+import com.medkha.familyTree.entity.Gender;
+import com.medkha.familyTree.entity.Person;
+import com.medkha.familyTree.entity.composite.CoupleComposite;
+import com.medkha.familyTree.repository.CoupleRepository;
+import com.medkha.familyTree.repository.PersonRepository;
 
 
 @SpringBootApplication
@@ -12,58 +25,51 @@ public class FamilyTreeApplication {
 		SpringApplication.run(FamilyTreeApplication.class, args);
 	}
 	
-//	@Bean
-//	  public CommandLineRunner dataLoader(PersonRepository personRepo,
-//			  							FamilyRepository familyRepo) {
-//		PersonBuilder pb1 = new PersonBuilder();
-//		PersonBuilder pb2 = new PersonBuilder(); 
-//		
-//	    return new CommandLineRunner() {
-//	      @Override
-//	      public void run(String... args) throws Exception {
-//	    	// instantiating the first family 
-//	    	  
-////	    	Family loukhnati = new Family(); 
-////	    	loukhnati.setName("LOUKHNATI");
-////	    	loukhnati.setDescription("Loukhnati family");
-////	    	familyRepo.save(
-////	    			loukhnati
-////	    			);
-//	    	
-//	    	
-//	    	// instantiating the first person
-//	    	Person p1 = pb1
-//				.has()
-//					.firstName("Med Khalil")
-//					.lastName("LOUKHNATI")
-//					.gender(Gender.MALE)
-//				.born()
-//					.withBirthdate(LocalDate.of(1998, Month.DECEMBER, 28))
-//					.withBirthplace("Agadir")
-//				.build();
-//	    	
-////	    	p1.getFamilies().add(loukhnati);
-//	        personRepo.save(p1);
-//	        
-//	        //instantiatin the second person (first parent ) 
-//		      Person p2 = pb2
-//						.has()
-//							.firstName("Bouchaib")
-//							.lastName("LOUKHNATI")
-//							.gender(Gender.MALE)
-//						.born()
-//							.withBirthdate(LocalDate.of(1962, Month.DECEMBER, 17))
-//							.withBirthplace("Azemmour")
-//						.build();
-//			    	
-////			    	p2.getFamilies().add(loukhnati);
-//			        personRepo.save(p2);
-//	      }
-//	      
-//	     
-//		      
-//	      
-//	    };
-//	}
+	@Bean
+	
+	  public CommandLineRunner dataLoader(PersonRepository personRepo,
+			  							CoupleRepository coupleRepo) {
+		
+	    return new CommandLineRunner() {
+	      @Override
+	      @Transactional
+	      public void run(String... args) throws Exception {
+	    	  CoupleComposite grandFather = new Person(
+	  				"grandFather", 
+	  				"LOUKHNATI", 
+	  				Gender.MALE, 
+	  				new BirthInformation(
+	  						LocalDate.of(1928, 01, 10),
+	  						"Oujda"
+	  				),
+	  				null
+	  			); 
+	  		
+	  		CoupleComposite grandMother  = new Person(
+	  				"grandMother", 
+	  				"ITANKHOUL", 
+	  				Gender.FEMALE, 
+	  				new BirthInformation(
+	  						LocalDate.of(1936, 11, 01),
+	  						"Fes"
+	  				),
+	  				null
+	  			); 
+	  		
+	  		personRepo.save(grandFather); 
+	  		personRepo.save(grandMother); 
+	  		
+	    	Couple grandCouple = new Couple(grandFather.getParentsChild(), grandMother.getParentsChild()); 
+	  		grandFather.getParentsChild().getActualCouplesEngagedIn().add(grandCouple); 
+	  		grandMother.getParentsChild().getActualCouplesEngagedIn().add(grandCouple); 
+	  		
+	  		grandCouple = coupleRepo.save(grandCouple); 
+	      }
+	      
+	     
+		      
+	      
+	    };
+	}
 
 }

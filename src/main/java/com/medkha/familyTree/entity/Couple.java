@@ -7,7 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -38,31 +38,35 @@ public class Couple extends CoupleComposite{
 	 *  - One couple has One partnership 
 	 *  - One Person can have multiple couples ( partners aka polygamy) 
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY,
+			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(
-			name = "COUPLE_PERSON",
+			name = "COUPLE_PARTNERS",
 			joinColumns = 
 				@JoinColumn(name = "COUPLE_ID"),
 			inverseJoinColumns = 
-				@JoinColumn(name = "PERSON_ID", nullable = false)
+				@JoinColumn(name = "PARTNER_ID", nullable = false)
 			)
 	@Valid
-	private Person partner; 
+	private Set<Person> partners = new HashSet<>(); 
 	
 	protected Couple() {}
 	
-	public Couple(CoupleComposite aParentCouple, Person parentsChild, Person partner) {
+	public Couple(CoupleComposite aParentCouple, Person parentsChild, Person theOtherPartner) {
 		super();
 		this.parentCouple = aParentCouple;
 		this.parentsChild = parentsChild;
-		this.partner = partner;
+		this.partners.add(this.parentsChild); 
+		this.partners.add(theOtherPartner); 
 	}
 	
-	public Couple(Person parentsChild, Person partner) {
+	public Couple(Person parentsChild, Person theOtherPartner) {
 		super();
 		this.parentCouple = null; 
 		this.parentsChild = parentsChild;
-		this.partner = partner;
+		this.parentsChild = parentsChild;
+		this.partners.add(this.parentsChild); 
+		this.partners.add(theOtherPartner); 
 	}
 	
 	public Set<CoupleComposite> getChildren() {
@@ -81,12 +85,12 @@ public class Couple extends CoupleComposite{
 		this.parentCouple = parentCouple;
 	}
 
-	public Person getPartner() {
-		return partner;
+	public Set<Person> getPartners() {
+		return partners;
 	}
 
-	public void setPartner(Person partner) {
-		this.partner = partner;
+	public void setPartners(Set<Person> partners) {
+		this.partners = partners;
 	}
 
 	public void setParentsChild(Person parentsChild) {
@@ -119,10 +123,16 @@ public class Couple extends CoupleComposite{
 	
 	
 
+	
+
 	@Override
 	public String toString() {
-		return "Couple [parentsChild=" + parentsChild.getFirstName() + " " + parentsChild.getLastName() 
-		+ ", partner=" + partner.getFirstName() + " " + partner.getLastName() + "]";
+		String partnersToString = ""; 
+		for(Person partner : partners) {
+			partnersToString += "(" + partner.getFirstName() + " " + partner.getLastName() + ") "; 
+		}
+		
+		return "Couple [partners=" + partnersToString + "]";
 	}
 
 	@Override
@@ -133,10 +143,10 @@ public class Couple extends CoupleComposite{
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((parentsChild == null) ? 0 : parentsChild.hashCode());
-		result = prime * result + ((partner == null) ? 0 : partner.hashCode());
-		return result;
+//		int result = super.hashCode();
+//		result = prime * result + ((parentsChild == null) ? 0 : parentsChild.hashCode());
+//		result = prime * result + ((partner == null) ? 0 : partner.hashCode());
+		return prime; //result
 	}
 
 	@Override
@@ -147,17 +157,17 @@ public class Couple extends CoupleComposite{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Couple other = (Couple) obj;
-		if (parentsChild == null) {
-			if (other.parentsChild != null)
-				return false;
-		} else if (!parentsChild.equals(other.parentsChild))
-			return false;
-		if (partner == null) {
-			if (other.partner != null)
-				return false;
-		} else if (!partner.equals(other.partner))
-			return false;
+//		Couple other = (Couple) obj;
+//		if (parentsChild == null) {
+//			if (other.parentsChild != null)
+//				return false;
+//		} else if (!parentsChild.equals(other.parentsChild))
+//			return false;
+//		if (partner == null) {
+//			if (other.partner != null)
+//				return false;
+//		} else if (!partner.equals(other.partner))
+//			return false;
 		return true;
 	}
 

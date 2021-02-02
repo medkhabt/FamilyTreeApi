@@ -2,25 +2,17 @@ package com.medkha.familyTree.repository_tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
-import java.time.Month;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -32,9 +24,7 @@ import com.medkha.familyTree.entity.composite.CoupleComposite;
 import com.medkha.familyTree.repository.CoupleRepository;
 import com.medkha.familyTree.repository.PersonRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class PersonRepositoryTest {
@@ -81,7 +71,6 @@ public class PersonRepositoryTest {
 	
 	@AfterEach
 	public void breakdown() {
-		personRepo.deleteAll();
 		this.grandFather = null; 
 		this.grandMother = null; 
 	}
@@ -222,14 +211,40 @@ public class PersonRepositoryTest {
 		
 //		personRepo.removeCouple(newGrandCouple);
 		
-		personRepo.findById(this.grandFather.getId()).get().getParentsChild().getActualCouplesEngagedIn()
-			.forEach((couple) -> log.info(couple.toString()));
-				
 		
 		// then 
 		
 		assertTrue(personRepo.findById(this.grandFather.getId()).get().getParentsChild().getActualCouplesEngagedIn().isEmpty()); 
 		assertNull(coupleRepo.findById(newGrandCouple.getId()).orElse(null)); 
 	}
+	
+	@Test
+	@Transactional
+	public void shouldRetNull_When_PersonDeleted() {
+		// given 
+		Couple grandCouple = new Couple(this.grandFather.getParentsChild(), this.grandMother.getParentsChild()); 
+		this.grandFather.getParentsChild().getActualCouplesEngagedIn().add(grandCouple); 
+		this.grandMother.getParentsChild().getActualCouplesEngagedIn().add(grandCouple); 
+		
+		grandCouple = coupleRepo.save(grandCouple); 
+		
+		// when 
+		
+		personRepo.deleteById(this.grandFather.getId());
+		
+		// then
+		
+		assertNull(personRepo.findById(this.grandFather.getId()).orElse(null)); 
+		assertNull(coupleRepo.findById(grandCouple.getId()).orElse(null)); 
+		assertEquals(0, personRepo.findById(this.grandMother.getId())
+									.get()
+										.getParentsChild()
+											.getActualCouplesEngagedIn()
+												.size());
+		
+		
+		
+	}
+	 
 	
 }

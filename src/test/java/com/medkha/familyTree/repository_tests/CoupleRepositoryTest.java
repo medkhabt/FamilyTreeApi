@@ -119,7 +119,7 @@ public class CoupleRepositoryTest {
 		// then 
 		
 		assertNotNull(this.grandCouple.getId()); 
-		assertEquals(1, personRepo.findById(this.grandFather.getId()).get().getParentsChild().getActualCouplesEngagedIn().size()); ;
+		assertEquals(1, personRepo.findById(this.grandFather.getId()).get().getParentsChild().getActualCouplesEngagedIn().size());
 	
 	
 	}

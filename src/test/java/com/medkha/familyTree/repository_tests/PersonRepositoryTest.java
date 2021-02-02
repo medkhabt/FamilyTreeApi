@@ -70,7 +70,7 @@ public class PersonRepositoryTest {
 	}
 	
 	@AfterEach
-	public void breakdown() {
+	public void reset() {
 		this.grandFather = null; 
 		this.grandMother = null; 
 	}
@@ -175,7 +175,7 @@ public class PersonRepositoryTest {
 	
 	@Test
 	@Transactional
-	void shouldBeEmpty_When_DeleteOnlyCouple() {
+	void shouldBeEmpty_When_DeleteTheOnlyCouple() {
 		// given 
 		
 		Couple grandCouple = new Couple(this.grandFather.getParentsChild(), this.grandMother.getParentsChild()); 
@@ -191,14 +191,7 @@ public class PersonRepositoryTest {
 		
 		
 		// when 
-		this.grandFather = personRepo.findById(this.grandFather.getId()).get();
-		this.grandMother= personRepo.findById(this.grandMother.getId()).get();
-//	
-		
-		personRepo.save(this.grandFather);
-		personRepo.save(this.grandMother);
-		
-		
+
 		
 		coupleRepo.deleteById(grandCouple.getId());
 	

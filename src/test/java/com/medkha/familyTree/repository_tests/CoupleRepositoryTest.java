@@ -196,7 +196,7 @@ public class CoupleRepositoryTest {
 		
 		// when 
 		
-		father = this.personRepo.save(father); 
+		father = this.personRepo.save(father.getParentsChild()); 
 		
 		// then 
 		
@@ -236,7 +236,7 @@ public class CoupleRepositoryTest {
 		
 		this.grandCouple.addChild(father);		
 		
-		father = this.personRepo.save(father); 
+		father = this.personRepo.save(father.getParentsChild()); 
 		
 		// when 
 		

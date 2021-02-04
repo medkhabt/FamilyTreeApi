@@ -64,8 +64,8 @@ public class PersonRepositoryTest {
 				null
 			); 
 		
-		personRepo.save(this.grandFather); 
-		personRepo.save(this.grandMother); 
+		personRepo.save(this.grandFather.getParentsChild()); 
+		personRepo.save(this.grandMother.getParentsChild()); 
 		
 	}
 	
@@ -92,7 +92,7 @@ public class PersonRepositoryTest {
 		
 		// when 
 		
-		medkhalil = personRepo.save(medkhalil); 
+		medkhalil = personRepo.save(medkhalil.getParentsChild()); 
 		
 		// then
 		
@@ -148,7 +148,7 @@ public class PersonRepositoryTest {
 			); 
 		// when 
 		
-		medReda = personRepo.save(medReda); 
+		medReda = personRepo.save(medReda.getParentsChild()); 
 		
 		// then
 		
@@ -163,7 +163,7 @@ public class PersonRepositoryTest {
 		// when
 		
 		this.grandFather.getParentsChild().setFirstName("Mohamed");
-		this.grandFather = personRepo.save(this.grandFather); 
+		this.grandFather = personRepo.save(this.grandFather.getParentsChild()); 
 		
 		
 		assertTrue(

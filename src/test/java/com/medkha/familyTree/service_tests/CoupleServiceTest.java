@@ -196,23 +196,33 @@ public class CoupleServiceTest {
 	}
 	
 	@Test 
-	public void shouldRetCorrectSize_When_SearchingForAllCouples() {
-		try {
+	public void shouldRetCorrectSize_When_SearchingForAllCouples() throws Exception {
+		
 			// given 
+			CoupleComposite someChick = new Person(
+				"Josephine", 
+				"SUGARDADDY", 
+				Gender.FEMALE, 
+				new BirthInformation(
+						LocalDate.of(1978, 11, 01),
+						"Fes"
+				),
+				null
+			);
+			
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 			grandCouple = coupleService.createCouple(grandCouple);
 			
-			Couple grandCouple1 = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
+			Couple grandCouple1 = new Couple(this.grandpa.getParentsChild(), someChick.getParentsChild());
 			grandCouple1 = coupleService.createCouple(grandCouple1);
 			
 			// when
-			int size = coupleService.findAllCouples().size(); 
+			int size = coupleService.findAllCouples().size();
 			
-			// then 
+			// then
 			assertEquals(2, size);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			
+		
 	}
 	
 }

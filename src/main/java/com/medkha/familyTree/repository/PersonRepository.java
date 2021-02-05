@@ -4,7 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.medkha.familyTree.entity.Person;
-import com.medkha.familyTree.entity.composite.CoupleComposite;
 
 @Repository
 public interface PersonRepository extends CrudRepository<Person,Long>, CustomPersonRepository{

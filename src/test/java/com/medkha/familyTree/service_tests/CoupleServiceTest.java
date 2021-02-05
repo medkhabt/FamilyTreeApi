@@ -118,7 +118,7 @@ public class CoupleServiceTest {
 						.findCoupleById(grandCouple.getId())
 							.getParentsChild()
 								.getId()); 
-		} catch (Exception e) {
+			} catch (Exception e) {
 			
 		}
 	}

@@ -33,6 +33,9 @@ public class CoupleServiceTest {
 	
 	private CoupleComposite grandpa; 
 	private CoupleComposite grandma; 
+	private CoupleComposite chick; 
+	
+	private Couple questionableCouple; 
 
 	@Autowired
 	CoupleService coupleService;
@@ -40,7 +43,7 @@ public class CoupleServiceTest {
 	PersonService personService;  
 	
 	@BeforeEach
-	public void init() {
+	public void init() throws Exception {
 		coupleService.deleteAllCouples(); 
 		personService.deleteAllPerson();
 		
@@ -65,6 +68,21 @@ public class CoupleServiceTest {
 				),
 				null
 			);
+		 
+		 this.chick = new Person(
+					"Josephine", 
+					"SUGARDADDY", 
+					Gender.FEMALE, 
+					new BirthInformation(
+							LocalDate.of(1978, 11, 01),
+							"Fes"
+					),
+					null
+				);
+		 
+		this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
+		this.questionableCouple = coupleService.createCouple(this.questionableCouple);
+		 
 		
 	}
 	
@@ -194,39 +212,26 @@ public class CoupleServiceTest {
 	}
 	
 	@Test 
-	@Transactional
+//	@Transactional
 	public void shouldRetCorrectSize_When_SearchingForAllCouples() throws Exception {
 		
 			// given 
-			CoupleComposite someChick = new Person(
-				"Josephine", 
-				"SUGARDADDY", 
-				Gender.FEMALE, 
-				new BirthInformation(
-						LocalDate.of(1978, 11, 01),
-						"Fes"
-				),
-				null
-			);
 			
-			CoupleComposite notgrandpa = new Person(
-					"definetelyNotGrandPa", 
-					"Not me", 
-					Gender.MALE, 
-					new BirthInformation(
-							LocalDate.of(1928, 01, 10),
-							"Oujda"
-					),
-					null
-				);
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
+			
 			grandCouple = coupleService.createCouple(grandCouple);
 			
-			this.grandpa = personService.findPersonById(this.grandpa.getId()); 
+			this.grandpa = personService.findPersonById(this.grandpa.getId());
+			this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
 			
 			
-			Couple grandCouple1 = new Couple(this.grandpa.getParentsChild(), someChick.getParentsChild());
-			grandCouple1 = coupleService.createCouple(grandCouple1);
+			 
+			this.questionableCouple = coupleService.createCouple(this.questionableCouple);
+			
+			 
+			log.info("chick couples: " + this.chick.getParentsChild().getActualCouplesEngagedIn());
+			
+		
 			
 			// when
 			int size = coupleService.findAllCouples().size();

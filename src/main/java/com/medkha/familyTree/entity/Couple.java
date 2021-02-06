@@ -16,6 +16,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.JoinColumn;
 
 import com.medkha.familyTree.entity.composite.CoupleComposite;
@@ -41,8 +44,8 @@ public class Couple extends CoupleComposite{
 	 *  - One couple has One partnership 
 	 *  - One Person can have multiple couples ( partners aka polygamy) 
 	 */
-	@ManyToMany(fetch = FetchType.LAZY,
-			cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+	@ManyToMany(fetch = FetchType.LAZY)
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinTable(
 			name = "COUPLE_PARTNERS",
 			joinColumns = 

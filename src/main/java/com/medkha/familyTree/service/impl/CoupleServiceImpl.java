@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,32 +27,24 @@ public class CoupleServiceImpl implements CoupleService{
 	private PersonRepository personRepository; 
 	
 	@Override
+	@Transactional
 	public Couple createCouple(Couple couple) throws Exception{
 		if(couple.getId() == null) {	
 			
-			Person partners[] = couple.getPartners().stream().toArray(Person[] ::new); 
-//			Iterator<Person> partnersInCoupleIterator = couple.getPartners().iterator(); 
-//			Person firstPartner = partnersInCoupleIterator.next();
-			if(partners[0].getId() !=null ) { 				
-				partners[0] = personRepository.findById(partners[0].getId()).get(); 
-				for(Couple coupleIn : partners[0].getActualCouplesEngagedIn()) { 
-					for(Person partner : coupleIn.getPartners()) {
-//						Person theOtherPartner = partnersInCoupleIterator.next(); 
-						if(partner.getId().equals(partners[1].getId())) {
-							throw new Exception("Couple aleary existing"); 
-						}
-					}
-				}
+			if(isValidCouple(couple)) {
+				couple.getPartners().forEach((partner) -> {
+					partner.getActualCouplesEngagedIn().add(couple); 
+				});
+				return  coupleRepository.save(couple); 
+			} else {
+				throw new Exception("Same Couple already existing!"); 
 			}
 			
-				
-			couple.getPartners().forEach(
-					(partner) -> partner.addActualCouple(couple)
-					);
-			return  coupleRepository.save(couple); 
+			
+			
 		}
 		else {
-			throw new Exception("Couple: " + couple.toString() + " exist already!"); 
+			throw new Exception("id of the Couple: " + couple.toString() + " exist already!"); 
 		}
 	}
 
@@ -93,6 +86,27 @@ public class CoupleServiceImpl implements CoupleService{
 	@Override
 	public void deleteAllCouples() {
 		coupleRepository.deleteAll();
+	}
+	
+	public Boolean isValidCouple(Couple couple) throws Exception{ 
+		Person partners[] = couple.getPartners().stream().toArray(Person[] ::new); 
+//		Iterator<Person> partnersInCoupleIterator = couple.getPartners().iterator(); 
+//		Person firstPartner = partnersInCoupleIterator.next();
+		if(partners[0].getId() !=null ) { 				
+			partners[0] = personRepository.findById(partners[0].getId()).get(); 
+			for(Couple coupleIn : partners[0].getActualCouplesEngagedIn()) { 
+				for(Person partner : coupleIn.getPartners()) {
+//					Person theOtherPartner = partnersInCoupleIterator.next(); 
+					if(partners[1].getId() != null) {
+						if(partner.getId().equals(partners[1].getId())) {
+							return false; 
+						}
+					}
+					
+				}
+			}
+		}
+		return true; 
 	}
 	
 

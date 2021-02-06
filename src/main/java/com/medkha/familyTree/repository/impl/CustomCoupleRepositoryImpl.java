@@ -1,5 +1,8 @@
 package com.medkha.familyTree.repository.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -23,16 +26,20 @@ public class CustomCoupleRepositoryImpl implements CustomCoupleRepository{
 	@Override
 	@Transactional
 	public Couple saveSafely(Couple couple) {
-	
-	
-		for(Person partner : couple.getPartners()) {
+
+		Set<Person> partnersUpdate = new HashSet<Person>(couple.getPartners()); 
+		for(Person partner : partnersUpdate) {
 			if(partner.getId() != null) { 
-				this.entityManager.merge(partner); 
+				Person mergedPartner = this.entityManager.merge(partner); 
+				couple.getPartners().remove(partner); 
+				couple.getPartners().add(mergedPartner);
 			}
 			else { 
 				this.entityManager.persist(partner);
 			}
 		}
+		
+		couple.setPartners(partnersUpdate);
 		
 		if(couple.getId() == null) {
 			

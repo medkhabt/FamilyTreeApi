@@ -1,13 +1,18 @@
 package com.medkha.familyTree.service.impl;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.medkha.familyTree.entity.Couple;
+import com.medkha.familyTree.entity.Person;
 import com.medkha.familyTree.repository.CoupleRepository;
+import com.medkha.familyTree.repository.PersonRepository;
 import com.medkha.familyTree.service.CoupleService;
 
 
@@ -17,10 +22,33 @@ public class CoupleServiceImpl implements CoupleService{
 	@Autowired
 	private CoupleRepository coupleRepository; 
 
+	@Autowired 
+	private PersonRepository personRepository; 
+	
 	@Override
 	public Couple createCouple(Couple couple) throws Exception{
-		if(couple.getId() == null) {			
-			return coupleRepository.save(couple);
+		if(couple.getId() == null) {	
+			
+			Person partners[] = couple.getPartners().stream().toArray(Person[] ::new); 
+//			Iterator<Person> partnersInCoupleIterator = couple.getPartners().iterator(); 
+//			Person firstPartner = partnersInCoupleIterator.next();
+			if(partners[0].getId() !=null ) { 				
+				partners[0] = personRepository.findById(partners[0].getId()).get(); 
+				for(Couple coupleIn : partners[0].getActualCouplesEngagedIn()) { 
+					for(Person partner : coupleIn.getPartners()) {
+//						Person theOtherPartner = partnersInCoupleIterator.next(); 
+						if(partner.getId().equals(partners[1].getId())) {
+							throw new Exception("Couple aleary existing"); 
+						}
+					}
+				}
+			}
+			
+				
+			couple.getPartners().forEach(
+					(partner) -> partner.addActualCouple(couple)
+					);
+			return  coupleRepository.save(couple); 
 		}
 		else {
 			throw new Exception("Couple: " + couple.toString() + " exist already!"); 
@@ -66,5 +94,6 @@ public class CoupleServiceImpl implements CoupleService{
 	public void deleteAllCouples() {
 		coupleRepository.deleteAll();
 	}
+	
 
 }

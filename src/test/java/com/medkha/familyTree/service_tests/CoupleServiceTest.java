@@ -7,6 +7,8 @@ import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +24,9 @@ import com.medkha.familyTree.entity.composite.CoupleComposite;
 import com.medkha.familyTree.service.CoupleService;
 import com.medkha.familyTree.service.PersonService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CoupleServiceTest {
@@ -64,8 +69,8 @@ public class CoupleServiceTest {
 	}
 	
 	@Test
-	public void shouldReturnNotNull_When_CreartingNewCouple() {
-		try {
+	public void shouldReturnNotNull_When_CreartingNewCouple() throws Exception{
+		
 		// given
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 		
@@ -75,9 +80,6 @@ public class CoupleServiceTest {
 		// then 
 			assertNotNull(coupleService.findCoupleById(result.getId()));
 		
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
 
 	}
 	
@@ -101,8 +103,8 @@ public class CoupleServiceTest {
 	}
 	
 	@Test 
-	public void shouldReturnUpdatedCouple_When_UpdateCouple() {
-		try {
+	public void shouldReturnUpdatedCouple_When_UpdateCouple() throws Exception{
+		
 			// given 
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 			grandCouple = coupleService.createCouple(grandCouple);
@@ -118,9 +120,7 @@ public class CoupleServiceTest {
 						.findCoupleById(grandCouple.getId())
 							.getParentsChild()
 								.getId()); 
-			} catch (Exception e) {
-			
-		}
+		
 	}
 	
 	@Test 
@@ -141,8 +141,8 @@ public class CoupleServiceTest {
 	}
 	
 	@Test 
-	public void shouldRetNull_When_DeleteCouple() {
-		try {
+	public void shouldRetNull_When_DeleteCouple() throws Exception{
+	
 			// given 
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 			grandCouple = coupleService.createCouple(grandCouple);
@@ -152,9 +152,7 @@ public class CoupleServiceTest {
 			
 			// then
 			assertNull(coupleService.findCoupleById(grandCouple.getId()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
+		
 		
 		
 	}
@@ -196,6 +194,7 @@ public class CoupleServiceTest {
 	}
 	
 	@Test 
+	@Transactional
 	public void shouldRetCorrectSize_When_SearchingForAllCouples() throws Exception {
 		
 			// given 
@@ -210,8 +209,21 @@ public class CoupleServiceTest {
 				null
 			);
 			
+			CoupleComposite notgrandpa = new Person(
+					"definetelyNotGrandPa", 
+					"Not me", 
+					Gender.MALE, 
+					new BirthInformation(
+							LocalDate.of(1928, 01, 10),
+							"Oujda"
+					),
+					null
+				);
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 			grandCouple = coupleService.createCouple(grandCouple);
+			
+			this.grandpa = personService.findPersonById(this.grandpa.getId()); 
+			
 			
 			Couple grandCouple1 = new Couple(this.grandpa.getParentsChild(), someChick.getParentsChild());
 			grandCouple1 = coupleService.createCouple(grandCouple1);

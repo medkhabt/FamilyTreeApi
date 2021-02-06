@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.persistence.JoinColumn;
@@ -26,7 +29,7 @@ public class Couple extends CoupleComposite{
 			   fetch = FetchType.LAZY,
 			   cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<@Valid @NotNull CoupleComposite> children = new HashSet<>();
-	@OneToOne(
+	@ManyToOne(
 			fetch = FetchType.LAZY, 
 			optional = false , // if optional = true, as we have unique column ( we can have null for only one instance )  
 			cascade = CascadeType.PERSIST
@@ -39,7 +42,7 @@ public class Couple extends CoupleComposite{
 	 *  - One Person can have multiple couples ( partners aka polygamy) 
 	 */
 	@ManyToMany(fetch = FetchType.LAZY,
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+			cascade = {CascadeType.MERGE, CascadeType.PERSIST})
 	@JoinTable(
 			name = "COUPLE_PARTNERS",
 			joinColumns = 
@@ -56,8 +59,12 @@ public class Couple extends CoupleComposite{
 		super();
 		this.parentCouple = aParentCouple;
 		this.parentsChild = parentsChild;
-		this.partners.add(this.parentsChild); 
-		this.partners.add(theOtherPartner); 
+		if(!this.partners.contains(this.parentsChild)) {			
+			this.partners.add(this.parentsChild); 
+		}
+		if(!this.partners.contains(theOtherPartner)) {		
+			this.partners.add(theOtherPartner); 
+		}
 	}
 	
 	public Couple(Person parentsChild, Person theOtherPartner) {
@@ -65,8 +72,12 @@ public class Couple extends CoupleComposite{
 		this.parentCouple = null; 
 		this.parentsChild = parentsChild;
 		this.parentsChild = parentsChild;
-		this.partners.add(this.parentsChild); 
-		this.partners.add(theOtherPartner); 
+		if(!this.partners.contains(this.parentsChild)) {			
+			this.partners.add(this.parentsChild); 
+		}
+		if(!this.partners.contains(theOtherPartner)) {		
+			this.partners.add(theOtherPartner); 
+		}
 	}
 	
 	public Set<CoupleComposite> getChildren() {

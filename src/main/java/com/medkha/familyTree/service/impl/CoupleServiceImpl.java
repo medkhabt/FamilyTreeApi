@@ -30,12 +30,17 @@ public class CoupleServiceImpl implements CoupleService{
 	@Transactional
 	public Couple createCouple(Couple couple) throws Exception{
 		if(couple.getId() == null) {	
+			Couple coupleContainer = new Couple(); 
+			coupleContainer = coupleRepository.save(coupleContainer); 
+			
+			coupleContainer.setPartners(couple.getPartners());
+			
 			
 			if(isValidCouple(couple)) {
 				couple.getPartners().forEach((partner) -> {
 					partner.getActualCouplesEngagedIn().add(couple); 
 				});
-				return  coupleRepository.save(couple); 
+				return  coupleRepository.save(coupleContainer); 
 			} else {
 				throw new Exception("Same Couple already existing!"); 
 			}

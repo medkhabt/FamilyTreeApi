@@ -34,7 +34,7 @@ public class Couple extends CoupleComposite{
 	private Set<@Valid @NotNull CoupleComposite> children = new HashSet<>();
 	@ManyToOne(
 			fetch = FetchType.LAZY, 
-			optional = false , // if optional = true, as we have unique column ( we can have null for only one instance )  
+//			optional = false , // if optional = true, as we have unique column ( we can have null for only one instance )  
 			cascade = CascadeType.PERSIST
 			)
 	@Valid
@@ -45,7 +45,6 @@ public class Couple extends CoupleComposite{
 	 *  - One Person can have multiple couples ( partners aka polygamy) 
 	 */
 	@ManyToMany(fetch = FetchType.LAZY)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinTable(
 			name = "COUPLE_PARTNERS",
 			joinColumns = 
@@ -56,7 +55,7 @@ public class Couple extends CoupleComposite{
 	@Valid
 	private Set<Person> partners = new HashSet<>(); 
 	
-	protected Couple() {}
+	public Couple() {}
 	
 	public Couple(CoupleComposite aParentCouple, Person parentsChild, Person theOtherPartner) {
 		super();

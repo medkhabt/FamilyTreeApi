@@ -30,7 +30,7 @@ public class CustomCoupleRepositoryImpl implements CustomCoupleRepository{
 		Set<Person> partnersUpdate = new HashSet<Person>(couple.getPartners()); 
 		for(Person partner : partnersUpdate) {
 			if(partner.getId() != null) { 
-				Person mergedPartner = this.entityManager.merge(partner); 
+				Person mergedPartner = this.entityManager.find(Person.class, partner.getId()); 
 				couple.getPartners().remove(partner); 
 				couple.getPartners().add(mergedPartner);
 			}

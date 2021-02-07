@@ -79,9 +79,12 @@ public class CoupleServiceTest {
 					),
 					null
 				);
-		 
+		this.personService.createPerson(this.grandpa);
+		this.personService.createPerson(this.grandma); 
+		this.personService.createPerson(this.chick); 
 		this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
 		this.questionableCouple = coupleService.createCouple(this.questionableCouple);
+		
 		 
 		
 	}
@@ -124,6 +127,7 @@ public class CoupleServiceTest {
 	public void shouldReturnUpdatedCouple_When_UpdateCouple() throws Exception{
 		
 			// given 
+			
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 			grandCouple = coupleService.createCouple(grandCouple);
 			
@@ -221,12 +225,12 @@ public class CoupleServiceTest {
 			
 			grandCouple = coupleService.createCouple(grandCouple);
 			
-			this.grandpa = personService.findPersonById(this.grandpa.getId());
-			this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
+//			this.grandpa = personService.findPersonById(this.grandpa.getId());
+//			this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
 			
 			
 			 
-			this.questionableCouple = coupleService.createCouple(this.questionableCouple);
+//			this.questionableCouple = coupleService.createCouple(this.questionableCouple);
 			
 			 
 			log.info("chick couples: " + this.chick.getParentsChild().getActualCouplesEngagedIn());

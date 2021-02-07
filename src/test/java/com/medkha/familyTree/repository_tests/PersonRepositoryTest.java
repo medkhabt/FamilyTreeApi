@@ -24,7 +24,10 @@ import com.medkha.familyTree.entity.composite.CoupleComposite;
 import com.medkha.familyTree.repository.CoupleRepository;
 import com.medkha.familyTree.repository.PersonRepository;
 
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class PersonRepositoryTest {
@@ -118,6 +121,9 @@ public class PersonRepositoryTest {
 		
 		this.grandFather = personRepo.findById(this.grandFather.getId()).get(); 
 		this.grandMother = personRepo.findById(this.grandMother.getId()).get();
+		
+		log.info("*** debug :  ");
+		log.info(this.grandFather.getParentsChild().getActualCouplesEngagedIn().iterator().next().toString());
 		// then
 		
 		assertTrue(this.grandFather.getParentsChild().getActualCouplesEngagedIn().iterator().next().equals(grandCouple)); 

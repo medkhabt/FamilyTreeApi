@@ -8,11 +8,17 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.JoinColumn;
 
 import com.medkha.familyTree.entity.composite.CoupleComposite;
@@ -26,9 +32,9 @@ public class Couple extends CoupleComposite{
 			   fetch = FetchType.LAZY,
 			   cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Set<@Valid @NotNull CoupleComposite> children = new HashSet<>();
-	@OneToOne(
+	@ManyToOne(
 			fetch = FetchType.LAZY, 
-			optional = false , // if optional = true, as we have unique column ( we can have null for only one instance )  
+//			optional = false , // if optional = true, as we have unique column ( we can have null for only one instance )  
 			cascade = CascadeType.PERSIST
 			)
 	@Valid
@@ -38,8 +44,7 @@ public class Couple extends CoupleComposite{
 	 *  - One couple has One partnership 
 	 *  - One Person can have multiple couples ( partners aka polygamy) 
 	 */
-	@ManyToMany(fetch = FetchType.LAZY,
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "COUPLE_PARTNERS",
 			joinColumns = 
@@ -50,14 +55,18 @@ public class Couple extends CoupleComposite{
 	@Valid
 	private Set<Person> partners = new HashSet<>(); 
 	
-	protected Couple() {}
+	public Couple() {}
 	
 	public Couple(CoupleComposite aParentCouple, Person parentsChild, Person theOtherPartner) {
 		super();
 		this.parentCouple = aParentCouple;
 		this.parentsChild = parentsChild;
-		this.partners.add(this.parentsChild); 
-		this.partners.add(theOtherPartner); 
+		if(!this.partners.contains(this.parentsChild)) {			
+			this.partners.add(this.parentsChild); 
+		}
+		if(!this.partners.contains(theOtherPartner)) {		
+			this.partners.add(theOtherPartner); 
+		}
 	}
 	
 	public Couple(Person parentsChild, Person theOtherPartner) {
@@ -65,8 +74,12 @@ public class Couple extends CoupleComposite{
 		this.parentCouple = null; 
 		this.parentsChild = parentsChild;
 		this.parentsChild = parentsChild;
-		this.partners.add(this.parentsChild); 
-		this.partners.add(theOtherPartner); 
+		if(!this.partners.contains(this.parentsChild)) {			
+			this.partners.add(this.parentsChild); 
+		}
+		if(!this.partners.contains(theOtherPartner)) {		
+			this.partners.add(theOtherPartner); 
+		}
 	}
 	
 	public Set<CoupleComposite> getChildren() {

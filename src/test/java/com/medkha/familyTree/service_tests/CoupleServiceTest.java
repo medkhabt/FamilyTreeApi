@@ -7,6 +7,8 @@ import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,12 +24,18 @@ import com.medkha.familyTree.entity.composite.CoupleComposite;
 import com.medkha.familyTree.service.CoupleService;
 import com.medkha.familyTree.service.PersonService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CoupleServiceTest {
 	
 	private CoupleComposite grandpa; 
 	private CoupleComposite grandma; 
+	private CoupleComposite chick; 
+	
+	private Couple questionableCouple; 
 
 	@Autowired
 	CoupleService coupleService;
@@ -35,7 +43,7 @@ public class CoupleServiceTest {
 	PersonService personService;  
 	
 	@BeforeEach
-	public void init() {
+	public void init() throws Exception {
 		coupleService.deleteAllCouples(); 
 		personService.deleteAllPerson();
 		
@@ -60,12 +68,30 @@ public class CoupleServiceTest {
 				),
 				null
 			);
+		 
+		 this.chick = new Person(
+					"Josephine", 
+					"SUGARDADDY", 
+					Gender.FEMALE, 
+					new BirthInformation(
+							LocalDate.of(1978, 11, 01),
+							"Fes"
+					),
+					null
+				);
+		this.personService.createPerson(this.grandpa);
+		this.personService.createPerson(this.grandma); 
+		this.personService.createPerson(this.chick); 
+		this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
+		this.questionableCouple = coupleService.createCouple(this.questionableCouple);
+		
+		 
 		
 	}
 	
 	@Test
-	public void shouldReturnNotNull_When_CreartingNewCouple() {
-		try {
+	public void shouldReturnNotNull_When_CreartingNewCouple() throws Exception{
+		
 		// given
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 		
@@ -75,9 +101,6 @@ public class CoupleServiceTest {
 		// then 
 			assertNotNull(coupleService.findCoupleById(result.getId()));
 		
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
 
 	}
 	
@@ -101,9 +124,10 @@ public class CoupleServiceTest {
 	}
 	
 	@Test 
-	public void shouldReturnUpdatedCouple_When_UpdateCouple() {
-		try {
+	public void shouldReturnUpdatedCouple_When_UpdateCouple() throws Exception{
+		
 			// given 
+			
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 			grandCouple = coupleService.createCouple(grandCouple);
 			
@@ -118,9 +142,7 @@ public class CoupleServiceTest {
 						.findCoupleById(grandCouple.getId())
 							.getParentsChild()
 								.getId()); 
-			} catch (Exception e) {
-			
-		}
+		
 	}
 	
 	@Test 
@@ -141,8 +163,8 @@ public class CoupleServiceTest {
 	}
 	
 	@Test 
-	public void shouldRetNull_When_DeleteCouple() {
-		try {
+	public void shouldRetNull_When_DeleteCouple() throws Exception{
+	
 			// given 
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 			grandCouple = coupleService.createCouple(grandCouple);
@@ -152,9 +174,7 @@ public class CoupleServiceTest {
 			
 			// then
 			assertNull(coupleService.findCoupleById(grandCouple.getId()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
+		
 		
 		
 	}
@@ -196,25 +216,26 @@ public class CoupleServiceTest {
 	}
 	
 	@Test 
+//	@Transactional
 	public void shouldRetCorrectSize_When_SearchingForAllCouples() throws Exception {
 		
 			// given 
-			CoupleComposite someChick = new Person(
-				"Josephine", 
-				"SUGARDADDY", 
-				Gender.FEMALE, 
-				new BirthInformation(
-						LocalDate.of(1978, 11, 01),
-						"Fes"
-				),
-				null
-			);
 			
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
+			
 			grandCouple = coupleService.createCouple(grandCouple);
 			
-			Couple grandCouple1 = new Couple(this.grandpa.getParentsChild(), someChick.getParentsChild());
-			grandCouple1 = coupleService.createCouple(grandCouple1);
+//			this.grandpa = personService.findPersonById(this.grandpa.getId());
+//			this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
+			
+			
+			 
+//			this.questionableCouple = coupleService.createCouple(this.questionableCouple);
+			
+			 
+			log.info("chick couples: " + this.chick.getParentsChild().getActualCouplesEngagedIn());
+			
+		
 			
 			// when
 			int size = coupleService.findAllCouples().size();

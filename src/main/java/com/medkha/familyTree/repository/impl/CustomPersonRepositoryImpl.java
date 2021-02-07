@@ -20,7 +20,7 @@ public class CustomPersonRepositoryImpl implements CustomPersonRepository{
 	
 	@Override
 	public Person saveSafely(Person entity) {
-		if(entity.getParentCouple() == null && entity.getId() == null ) { 
+		if(entity.getId() == null ) { 
 				this.entityManager.persist(entity);
 				return entity; 
 		}

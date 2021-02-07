@@ -4,6 +4,7 @@ package com.medkha.familyTree.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,6 +14,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
 
 import com.medkha.familyTree.entity.composite.CoupleComposite;
 
@@ -40,8 +42,9 @@ public class Person extends CoupleComposite{
 	@Valid
 	private DeathInformation deathInformation; 
 
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@ManyToMany(mappedBy = "partners",
-				fetch = FetchType.LAZY)
+				fetch = FetchType.EAGER)
 	private Set<@Valid Couple> actualCouplesEngagedIn = new HashSet<>(); 
 	
 

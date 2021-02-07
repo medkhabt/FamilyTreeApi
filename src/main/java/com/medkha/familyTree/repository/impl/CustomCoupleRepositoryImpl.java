@@ -5,14 +5,11 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.medkha.familyTree.entity.Couple;
 import com.medkha.familyTree.entity.Person;
 import com.medkha.familyTree.repository.CustomCoupleRepository;
-import com.medkha.familyTree.repository.CustomPersonRepository;
 
 public class CustomCoupleRepositoryImpl implements CustomCoupleRepository{
 
@@ -24,7 +21,7 @@ public class CustomCoupleRepositoryImpl implements CustomCoupleRepository{
 	
 	
 	@Override
-	@Transactional
+
 	public Couple saveSafely(Couple couple) {
 
 		Set<Person> partnersUpdate = new HashSet<Person>(couple.getPartners()); 

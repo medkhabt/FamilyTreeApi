@@ -3,6 +3,7 @@ package com.medkha.familyTree.service;
 import java.util.Set;
 
 import com.medkha.familyTree.entity.Couple;
+import com.medkha.familyTree.entity.composite.CoupleComposite;
 
 public interface CoupleService {
 	public Couple createCouple(Couple couple) throws Exception; 
@@ -11,5 +12,6 @@ public interface CoupleService {
 	public Set<Couple> findAllCouples(); 
 	public Couple findCoupleById(Long id);
 	public void deleteAllCouples(); 
+	public Set<CoupleComposite> getCoupleChildren(Long id) throws Exception;
 
 }

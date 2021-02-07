@@ -10,14 +10,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.JoinColumn;
 
@@ -30,7 +26,7 @@ public class Couple extends CoupleComposite{
 	
 	@OneToMany(mappedBy = "parentCouple",
 			   fetch = FetchType.LAZY,
-			   cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+			   cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	private Set<@Valid @NotNull CoupleComposite> children = new HashSet<>();
 	@ManyToOne(
 			fetch = FetchType.LAZY, 

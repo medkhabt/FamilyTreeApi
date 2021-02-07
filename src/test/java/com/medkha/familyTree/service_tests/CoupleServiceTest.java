@@ -3,11 +3,11 @@ package com.medkha.familyTree.service_tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -224,13 +224,7 @@ public class CoupleServiceTest {
 			Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
 			
 			grandCouple = coupleService.createCouple(grandCouple);
-			
-//			this.grandpa = personService.findPersonById(this.grandpa.getId());
-//			this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
-			
-			
-			 
-//			this.questionableCouple = coupleService.createCouple(this.questionableCouple);
+
 			
 			 
 			log.info("chick couples: " + this.chick.getParentsChild().getActualCouplesEngagedIn());
@@ -246,4 +240,69 @@ public class CoupleServiceTest {
 		
 	}
 	
+	@Test
+	void should_ThrowException_When_CreatingAnExistingCouple() {
+		
+		// given 
+		this.questionableCouple = new Couple(this.grandpa.getParentsChild(), this.chick.getParentsChild());
+	
+		try {
+			
+		// when
+			this.questionableCouple = coupleService.createCouple(this.questionableCouple);
+		// then	
+			fail("Should of thrown an Exception here, because the couple already existed in the db");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void should_RetChildren_When_CreatingChildren() throws Exception {
+		// given 
+		Couple grandCouple = new Couple(this.grandpa.getParentsChild(), this.grandma.getParentsChild());
+		
+		grandCouple = coupleService.createCouple(grandCouple);
+		CoupleComposite son = new Person(
+				"Father", 
+				"LOUKHNATI", 
+				Gender.MALE, 
+				new BirthInformation(
+						LocalDate.of(1968, 01, 10),
+						"Oujda"
+				),
+				grandCouple
+			); 
+		
+		CoupleComposite daughter = new Person(
+				"Aunt", 
+				"LOUKHNATI", 
+				Gender.FEMALE, 
+				new BirthInformation(
+						LocalDate.of(1974, 11, 04),
+						"Oujda"
+				),
+				grandCouple
+			); 
+		
+		this.personService.createPerson(son);
+		this.personService.createPerson(daughter); 
+		
+		// when 
+		
+		grandCouple.addChild(son);
+		grandCouple.addChild(daughter);
+		grandCouple = coupleService.updateCouple(grandCouple);
+		
+		//then 
+		
+		assertEquals(2, this.coupleService.getCoupleChildren(grandCouple.getId()).size());
+		assertTrue(
+					this.coupleService.getCoupleChildren(grandCouple.getId())
+						.contains(
+							this.personService.findPersonById(son.getId())
+									.getParentsChild()
+							)
+				); 
+	}
 }

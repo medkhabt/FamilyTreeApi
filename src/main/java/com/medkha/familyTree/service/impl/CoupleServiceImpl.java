@@ -1,8 +1,8 @@
 package com.medkha.familyTree.service.impl;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 
 import com.medkha.familyTree.entity.Couple;
 import com.medkha.familyTree.entity.Person;
+import com.medkha.familyTree.entity.composite.CoupleComposite;
 import com.medkha.familyTree.repository.CoupleRepository;
 import com.medkha.familyTree.repository.PersonRepository;
 import com.medkha.familyTree.service.CoupleService;
 
 
 @Service
-public class CoupleServiceImpl implements CoupleService{
+public class CoupleServiceImpl extends Couple implements CoupleService{
 	
 	@Autowired
 	private CoupleRepository coupleRepository; 
@@ -112,6 +113,23 @@ public class CoupleServiceImpl implements CoupleService{
 			}
 		}
 		return true; 
+	}
+
+	@Override
+	@Transactional
+	public Set<CoupleComposite> getCoupleChildren(Long id) throws Exception {
+		if(id != null) {
+			Couple couple = this.coupleRepository.findById(id).get(); 
+			Hibernate.initialize(couple.getChildren());
+			/**
+			 * Return the childs, if we have a Couple child we return the partner who's parent's child. (Set) for duplicate children 
+			 */
+			return couple.getChildren().stream().map((child) -> child.getParentsChild()).collect(Collectors.toSet());
+		}
+		else {
+			throw new Exception("Couple id is null."); 
+		}
+		
 	}
 	
 

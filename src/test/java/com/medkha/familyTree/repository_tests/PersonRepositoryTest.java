@@ -24,7 +24,10 @@ import com.medkha.familyTree.entity.composite.CoupleComposite;
 import com.medkha.familyTree.repository.CoupleRepository;
 import com.medkha.familyTree.repository.PersonRepository;
 
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class PersonRepositoryTest {
@@ -64,8 +67,8 @@ public class PersonRepositoryTest {
 				null
 			); 
 		
-		personRepo.save(this.grandFather); 
-		personRepo.save(this.grandMother); 
+		personRepo.save(this.grandFather.getParentsChild()); 
+		personRepo.save(this.grandMother.getParentsChild()); 
 		
 	}
 	
@@ -92,7 +95,7 @@ public class PersonRepositoryTest {
 		
 		// when 
 		
-		medkhalil = personRepo.save(medkhalil); 
+		medkhalil = personRepo.save(medkhalil.getParentsChild()); 
 		
 		// then
 		
@@ -118,6 +121,9 @@ public class PersonRepositoryTest {
 		
 		this.grandFather = personRepo.findById(this.grandFather.getId()).get(); 
 		this.grandMother = personRepo.findById(this.grandMother.getId()).get();
+		
+		log.info("*** debug :  ");
+		log.info(this.grandFather.getParentsChild().getActualCouplesEngagedIn().iterator().next().toString());
 		// then
 		
 		assertTrue(this.grandFather.getParentsChild().getActualCouplesEngagedIn().iterator().next().equals(grandCouple)); 
@@ -148,7 +154,7 @@ public class PersonRepositoryTest {
 			); 
 		// when 
 		
-		medReda = personRepo.save(medReda); 
+		medReda = personRepo.save(medReda.getParentsChild()); 
 		
 		// then
 		
@@ -163,7 +169,7 @@ public class PersonRepositoryTest {
 		// when
 		
 		this.grandFather.getParentsChild().setFirstName("Mohamed");
-		this.grandFather = personRepo.save(this.grandFather); 
+		this.grandFather = personRepo.save(this.grandFather.getParentsChild()); 
 		
 		
 		assertTrue(

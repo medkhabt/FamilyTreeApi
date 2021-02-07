@@ -1,19 +1,22 @@
 package com.medkha.familyTree.repository;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.medkha.familyTree.entity.composite.CoupleComposite;
+import com.medkha.familyTree.entity.Person;
 
 @Repository
-public interface PersonRepository extends CoupleCompositeRepository, CustomPersonRepository{
+public interface PersonRepository extends CrudRepository<Person,Long>, CustomPersonRepository{
 	@SuppressWarnings("unchecked")
 	@Override
-	default CoupleComposite save(CoupleComposite person) { 
+	public default Person save(Person person) { 
 		return saveSafely(person.getParentsChild()); 
 	}
 	
 	@Override
-	default void deleteById(Long id) {
+	public default void deleteById(Long id) {
 		deleteByIdSafely(id);
 	}
+	
+	public Iterable<Person> findByFirstNameAndLastName(String firstName, String lastName); 
 }

@@ -1,21 +1,9 @@
 package com.medkha.familyTree;
 
 
-import java.time.LocalDate;
-
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.medkha.familyTree.entity.BirthInformation;
-import com.medkha.familyTree.entity.Couple;
-import com.medkha.familyTree.entity.Gender;
-import com.medkha.familyTree.entity.Person;
-import com.medkha.familyTree.entity.composite.CoupleComposite;
-import com.medkha.familyTree.repository.CoupleRepository;
-import com.medkha.familyTree.repository.PersonRepository;
 
 
 @SpringBootApplication

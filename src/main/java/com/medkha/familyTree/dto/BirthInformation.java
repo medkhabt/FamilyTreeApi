@@ -1,30 +1,32 @@
 package com.medkha.familyTree.dto;
 
 import java.time.LocalDate;
-
+import java.util.Optional;
 
 
 public class BirthInformation {
 	
-	private LocalDate birthDate;
-	private String birthPlace;
+	private Optional<LocalDate> birthDate;
+	private Optional<String> birthPlace;
 	
-	protected BirthInformation() { 
-		
+	public BirthInformation(Optional<LocalDate> birthDate, Optional<String> birthPlace) {
+		this.birthDate = birthDate;
+		this.birthPlace = birthPlace;
 	}
-	public LocalDate getBirthDate() {
+
+	public Optional<LocalDate> getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(Optional<LocalDate> birthDate) {
 		this.birthDate = birthDate;
 	}
 
-	public String getBirthPlace() {
+	public Optional<String> getBirthPlace() {
 		return birthPlace;
 	}
 
-	public void setBirthPlace(String birthPlace) {
+	public void setBirthPlace(Optional<String> birthPlace) {
 		this.birthPlace = birthPlace;
 	}
 

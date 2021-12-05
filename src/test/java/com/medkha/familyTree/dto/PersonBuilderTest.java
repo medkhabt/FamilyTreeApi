@@ -1,4 +1,4 @@
-package com.medkha.familyTree.service_tests;
+package com.medkha.familyTree.dto;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,14 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.medkha.familyTree.dto.BirthInformation;
-import com.medkha.familyTree.dto.Gender;
 import com.medkha.familyTree.dto.person.Person;
 
-public class PersonServiceTest {
+public class PersonBuilderTest {
 
     @Test
     void createASinglePersonWithoutParents(){

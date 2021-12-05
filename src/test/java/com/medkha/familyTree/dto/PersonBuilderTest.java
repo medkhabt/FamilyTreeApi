@@ -85,19 +85,19 @@ public class PersonBuilderTest {
         Gender gender = Gender.MALE;
         BirthInformation birthInformation = new BirthInformation(Optional.empty(), Optional.of("place"));
         assertAll(
-                () -> assertThrows(IllegalStateException.class, ()-> {
+                () -> assertThrows(IllegalArgumentException.class, ()-> {
                     Person personWithNoGender = new Person.PersonBuilder()
                             .addFirstName(firstName)
                             .addLastName(lastName)
                             .build();
                 }),
-                () -> assertThrows(IllegalStateException.class, () -> {
+                () -> assertThrows(IllegalArgumentException.class, () -> {
                     Person personWithNoFirstName = new Person.PersonBuilder()
                             .addLastName("lastName")
                             .addGender(gender)
                             .build();
                 }),
-                () -> assertThrows(IllegalStateException.class, () -> {
+                () -> assertThrows(IllegalArgumentException.class, () -> {
                     Person personWithNoLastName = new Person.PersonBuilder()
                             .addFirstName("firstName")
                             .addGender(gender)

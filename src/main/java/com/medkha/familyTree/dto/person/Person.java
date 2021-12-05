@@ -98,6 +98,16 @@ public class Person {
             return this;
         }
 
+        public PersonBuilder addFather(Optional<Person> father) {
+            this.father = father;
+            return this;
+        }
+
+        public PersonBuilder addMother(Optional<Person> mother) {
+            this.mother = mother;
+            return this;
+        }
+
         public Person build() {
             Person person = new Person(this);
             validatePersonObjection(person);
@@ -106,5 +116,7 @@ public class Person {
 
         private void validatePersonObjection(Person person) {
         }
+
+
     }
 }

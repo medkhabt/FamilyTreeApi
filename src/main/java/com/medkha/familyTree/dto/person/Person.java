@@ -115,6 +115,12 @@ public class Person {
         }
 
         private void validatePersonObject(Person person) {
+            if(person.gender == null
+                    || person.firstName == null || person.firstName.isEmpty()
+                    || person.lastName == null || person.lastName.isEmpty()) {
+                throw new IllegalArgumentException("Can't build a person instance. The person instance needs at least a"
+                        + "FistName, LastName and a Gender to be built.");
+            }
         }
 
 

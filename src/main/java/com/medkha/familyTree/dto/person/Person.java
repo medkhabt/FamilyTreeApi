@@ -110,11 +110,11 @@ public class Person {
 
         public Person build() {
             Person person = new Person(this);
-            validatePersonObjection(person);
+            validatePersonObject(person);
             return person; 
         }
 
-        private void validatePersonObjection(Person person) {
+        private void validatePersonObject(Person person) {
         }
 
 

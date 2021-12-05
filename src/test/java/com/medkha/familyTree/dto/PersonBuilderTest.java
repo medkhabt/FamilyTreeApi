@@ -2,6 +2,7 @@ package com.medkha.familyTree.dto;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
@@ -75,6 +76,36 @@ public class PersonBuilderTest {
                 () -> assertEquals(Optional.of(mother), personWithoutParents.getMother()),
                 () -> assertEquals(gender, personWithoutParents.getGender())
         );
+    }
+
+    @Test
+    void shouldThrowException_when_notValidPersonObjectIsTryingToGetBuilt(){
+        String firstName = "firstName";
+        String lastName = "lastName";
+        Gender gender = Gender.MALE;
+        BirthInformation birthInformation = new BirthInformation(Optional.empty(), Optional.of("place"));
+        assertAll(
+                () -> assertThrows(IllegalStateException.class, ()-> {
+                    Person personWithNoGender = new Person.PersonBuilder()
+                            .addFirstName(firstName)
+                            .addLastName(lastName)
+                            .build();
+                }),
+                () -> assertThrows(IllegalStateException.class, () -> {
+                    Person personWithNoFirstName = new Person.PersonBuilder()
+                            .addLastName("lastName")
+                            .addGender(gender)
+                            .build();
+                }),
+                () -> assertThrows(IllegalStateException.class, () -> {
+                    Person personWithNoLastName = new Person.PersonBuilder()
+                            .addFirstName("firstName")
+                            .addGender(gender)
+                            .build();
+                })
+        );
+
+
     }
 
 }

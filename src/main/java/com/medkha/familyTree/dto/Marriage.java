@@ -52,12 +52,15 @@ public class Marriage {
         }
 
         public MarriageBuilder addPartner(Person person) {
+            this.partners.add(person);
             return this;
         }
         public MarriageBuilder addDateOfMarriage(LocalDate dateOfMarriage) {
+            this.dateOfMarriage = Optional.ofNullable(dateOfMarriage);
             return this;
         }
         public MarriageBuilder addDateEndOfMarriage(LocalDate endOfMarriageDate) {
+            this.dateEndOfMarriage = Optional.ofNullable(endOfMarriageDate);
             return this;
         }
         public Marriage build() {

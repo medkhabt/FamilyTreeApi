@@ -108,4 +108,20 @@ public class PersonBuilderTest {
 
     }
 
+
+
+    @Test
+    void createADivorcedPersonWhoOnceWasMarried(){
+
+    }
+
+    @Test
+    void createAMarriedPersonWithMultiplePartners(){
+
+    }
+    @Test
+    void createAMarriedPersonWhoOnceWasDivorced(){
+
+    }
+
 }

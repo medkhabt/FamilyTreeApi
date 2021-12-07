@@ -1,8 +1,10 @@
 package com.medkha.familyTree.dto.person;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import com.medkha.familyTree.dto.BirthInformation;
 import com.medkha.familyTree.dto.Gender;
@@ -16,13 +18,6 @@ public class Person {
     private final BirthInformation birthInformation;
     private final Optional<Person> father;
     private final Optional<Person> mother;
-
-    public Optional<Person> getFather() {
-        return father;
-    }
-    public Optional<Person> getMother() {
-        return mother;
-    }
 
     public Person(PersonBuilder builder) {
         this.firstName = builder.firstName;
@@ -45,6 +40,10 @@ public class Person {
     public BirthInformation getBirthInformation() {
         return birthInformation;
     }
+    public Optional<Person> getFather() {
+        return father;
+    }
+    public Optional<Person> getMother() {return mother;}
 
     @Override
     public boolean equals(Object o) {

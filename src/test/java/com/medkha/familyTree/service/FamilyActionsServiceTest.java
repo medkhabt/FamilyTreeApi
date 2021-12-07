@@ -52,8 +52,11 @@ public class FamilyActionsServiceTest {
                         Optional.empty());
 
         assertAll(
-                () -> assertTrue(marriage.getPartners().contains(marriedPersonWithOnePartner)),
-                () -> assertTrue(marriage.getPartners().contains(partnerOfTheMarriedPerson))
+                () -> assertTrue(marriage.getCouple().getKey().equals(marriedPersonWithOnePartner) ||
+                        marriage.getCouple().getValue().equals(marriedPersonWithOnePartner)
+                ),
+                () -> assertTrue(marriage.getCouple().getKey().equals(partnerOfTheMarriedPerson) ||
+                        marriage.getCouple().getValue().equals(partnerOfTheMarriedPerson))
         );
     }
 }

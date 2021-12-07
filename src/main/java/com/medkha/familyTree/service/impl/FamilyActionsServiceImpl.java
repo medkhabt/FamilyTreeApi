@@ -15,7 +15,6 @@ public class FamilyActionsServiceImpl implements FamilyActionsService {
 
     @Override
     public Marriage marriage(Person person1, Person person2, Optional<LocalDate> dateOfMarriage, Optional<LocalDate> dateEndOfMarriage) {
-        //TODO
         return null;
     }
 

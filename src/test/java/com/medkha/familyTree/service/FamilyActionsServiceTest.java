@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.medkha.familyTree.dto.BirthInformation;
 import com.medkha.familyTree.dto.Gender;
 import com.medkha.familyTree.dto.Marriage;
-import com.medkha.familyTree.dto.person.Person;
+import com.medkha.familyTree.dto.Person;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 public class FamilyActionsServiceTest {

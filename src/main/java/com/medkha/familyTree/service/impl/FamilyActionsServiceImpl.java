@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.medkha.familyTree.dto.DeathInformation;
 import com.medkha.familyTree.dto.Marriage;
-import com.medkha.familyTree.dto.person.Person;
+import com.medkha.familyTree.dto.Person;
 import com.medkha.familyTree.service.FamilyActionsService;
 
 @Service

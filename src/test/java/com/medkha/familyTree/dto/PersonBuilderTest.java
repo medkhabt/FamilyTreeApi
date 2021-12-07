@@ -9,8 +9,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import com.medkha.familyTree.dto.person.Person;
-
 public class PersonBuilderTest {
 
     @Test

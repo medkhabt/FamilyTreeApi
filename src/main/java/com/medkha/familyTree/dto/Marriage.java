@@ -6,8 +6,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import com.medkha.familyTree.dto.person.Person;
-
 public class Marriage {
     private final Set<Person> partners;
     private final Optional<LocalDate> dateOfMarriage;

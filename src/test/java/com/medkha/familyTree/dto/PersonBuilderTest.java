@@ -9,8 +9,6 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import com.medkha.familyTree.dto.person.Person;
-
 public class PersonBuilderTest {
 
     @Test
@@ -105,6 +103,22 @@ public class PersonBuilderTest {
                 })
         );
 
+
+    }
+
+
+
+    @Test
+    void createADivorcedPersonWhoOnceWasMarried(){
+
+    }
+
+    @Test
+    void createAMarriedPersonWithMultiplePartners(){
+
+    }
+    @Test
+    void createAMarriedPersonWhoOnceWasDivorced(){
 
     }
 

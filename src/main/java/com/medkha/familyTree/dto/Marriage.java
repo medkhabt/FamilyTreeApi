@@ -70,7 +70,7 @@ public class Marriage {
             validateMarriageObject(marriage);
             return marriage;
         }
-        private void validateMarriageObject(Marriage marriageToValidate) {
+        private void coupleValidationOfMarriageObject(Marriage marriageToValidate){
             if(marriageToValidate.getCouple() == null) {
                 throw new IllegalArgumentException("Can't create marriage with no couple");
             }
@@ -81,9 +81,12 @@ public class Marriage {
             }
 
             if(marriageToValidate.getCouple().getValue()
-                            .equals(marriageToValidate.getCouple().getKey())) {
+                    .equals(marriageToValidate.getCouple().getKey())) {
                 throw new IllegalArgumentException("Can't create a marriage of a person marrying himself.");
             }
+        }
+        private void validateMarriageObject(Marriage marriageToValidate) {
+           coupleValidationOfMarriageObject(marriageToValidate) ;
 
         }
     }

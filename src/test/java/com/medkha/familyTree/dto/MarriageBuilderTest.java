@@ -83,9 +83,6 @@ public class MarriageBuilderTest {
 
     @Test
     public void validateMarriage() {
-        // should throw exceptions in the following
-        // the End of marriage date should not be before the date of marriage.
-        // should not marry oneself.
         assertAll(
                 () -> assertThrows(IllegalArgumentException.class, () -> {
                     new Marriage.MarriageBuilder()

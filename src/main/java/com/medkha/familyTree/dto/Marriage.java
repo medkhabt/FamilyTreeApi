@@ -70,6 +70,13 @@ public class Marriage {
             validateMarriageObject(marriage);
             return marriage;
         }
+
+        private void validateMarriageObject(Marriage marriageToValidate) {
+           coupleValidationOfMarriageObject(marriageToValidate);
+           dateValidationOfMarriageObject(marriageToValidate);
+
+        }
+
         private void coupleValidationOfMarriageObject(Marriage marriageToValidate){
             if(marriageToValidate.getCouple() == null) {
                 throw new IllegalArgumentException("Can't create marriage with no couple");
@@ -85,9 +92,17 @@ public class Marriage {
                 throw new IllegalArgumentException("Can't create a marriage of a person marrying himself.");
             }
         }
-        private void validateMarriageObject(Marriage marriageToValidate) {
-           coupleValidationOfMarriageObject(marriageToValidate) ;
-
+        private void dateValidationOfMarriageObject(Marriage marriageToValidate) {
+            marriageToValidate.dateOfMarriage.filter(
+                    dateOfMarriage ->
+                        marriageToValidate.dateEndOfMarriage.filter( dateEndOfMarriage ->
+                                     dateOfMarriage.isAfter(dateEndOfMarriage)
+                        ).isPresent()
+            ).ifPresent(
+                    (m)-> {
+                        throw new IllegalArgumentException("Can't create a marriage when the date of marriage"
+                                + "is after the date of the end of marriage");
+                    });
         }
     }
 

@@ -64,8 +64,27 @@ public class Marriage {
             this.dateEndOfMarriage = Optional.ofNullable(endOfMarriageDate);
             return this;
         }
-        public Marriage build() {
-            return new Marriage(this);
+        public Marriage build()
+        {
+            Marriage marriage = new Marriage(this);
+            validateMarriageObject(marriage);
+            return marriage;
+        }
+        private void validateMarriageObject(Marriage marriageToValidate) {
+            if(marriageToValidate.getCouple() == null) {
+                throw new IllegalArgumentException("Can't create marriage with no couple");
+            }
+
+            if(marriageToValidate.getCouple().getKey() == null
+                    || marriageToValidate.getCouple().getValue() == null) {
+                throw new IllegalArgumentException("Can't create a marriage with a partner is missing in the couple.");
+            }
+
+            if(marriageToValidate.getCouple().getValue()
+                            .equals(marriageToValidate.getCouple().getKey())) {
+                throw new IllegalArgumentException("Can't create a marriage of a person marrying himself.");
+            }
+
         }
     }
 

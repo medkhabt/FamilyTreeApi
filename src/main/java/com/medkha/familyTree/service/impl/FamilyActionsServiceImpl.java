@@ -15,7 +15,13 @@ public class FamilyActionsServiceImpl implements FamilyActionsService {
 
     @Override
     public Marriage marriage(Person person1, Person person2, Optional<LocalDate> dateOfMarriage, Optional<LocalDate> dateEndOfMarriage) {
-        return null;
+        Marriage marriageToCreate = new Marriage.MarriageBuilder()
+                .addCouple(person1, person2)
+                .addDateOfMarriage(dateOfMarriage)
+                .addDateEndOfMarriage(dateEndOfMarriage)
+                .build();
+
+        return marriageToCreate;
     }
 
     @Override

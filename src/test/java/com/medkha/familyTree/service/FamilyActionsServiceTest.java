@@ -17,14 +17,16 @@ import com.medkha.familyTree.dto.BirthInformation;
 import com.medkha.familyTree.dto.Gender;
 import com.medkha.familyTree.dto.Marriage;
 import com.medkha.familyTree.dto.Person;
+import com.medkha.familyTree.service.impl.FamilyActionsServiceImpl;
+
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
 public class FamilyActionsServiceTest {
-    private FamilyActionsService familyActionsServiceMock;
 
-    @BeforeEach
-    public void setupMock() {
-        familyActionsServiceMock = mock(FamilyActionsService.class);
+    private FamilyActionsService familyActionsService;
+
+    public FamilyActionsServiceTest() {
+        familyActionsService = new FamilyActionsServiceImpl();
     }
     @Test
     void marryASinglePerson(){
@@ -45,7 +47,7 @@ public class FamilyActionsServiceTest {
                 .build();
 
         Marriage marriage =
-                this.familyActionsServiceMock.marriage(
+                this.familyActionsService.marriage(
                         marriedPersonWithOnePartner,
                         partnerOfTheMarriedPerson,
                         Optional.empty(),

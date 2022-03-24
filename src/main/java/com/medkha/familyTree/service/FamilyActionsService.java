@@ -9,5 +9,5 @@ import com.medkha.familyTree.dto.Person;
 
 public interface FamilyActionsService {
     public Marriage marriage(Person person1, Person person2, Optional<LocalDate> dateOfMarriage, Optional<LocalDate> dateEndOfMarriage);
-    public void death(Person deadPerson, DeathInformation deathInformation);
+    public Person death(Person deadPerson, DeathInformation deathInformation);
 }

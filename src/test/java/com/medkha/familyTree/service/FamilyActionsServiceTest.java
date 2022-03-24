@@ -1,16 +1,12 @@
 package com.medkha.familyTree.service;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.medkha.familyTree.dto.BirthInformation;
@@ -20,7 +16,6 @@ import com.medkha.familyTree.dto.Person;
 import com.medkha.familyTree.service.impl.FamilyActionsServiceImpl;
 
 @ExtendWith(SpringExtension.class)
-@ExtendWith(MockitoExtension.class)
 public class FamilyActionsServiceTest {
 
     private FamilyActionsService familyActionsService;

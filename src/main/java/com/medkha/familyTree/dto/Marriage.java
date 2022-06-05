@@ -56,12 +56,12 @@ public class Marriage {
             this.couple = new SimpleEntry<>(person1, person2);
             return this;
         }
-        public MarriageBuilder addDateOfMarriage(LocalDate dateOfMarriage) {
-            this.dateOfMarriage = Optional.ofNullable(dateOfMarriage);
+        public MarriageBuilder addDateOfMarriage(Optional<LocalDate> dateOfMarriage) {
+            this.dateOfMarriage = dateOfMarriage;
             return this;
         }
-        public MarriageBuilder addDateEndOfMarriage(LocalDate endOfMarriageDate) {
-            this.dateEndOfMarriage = Optional.ofNullable(endOfMarriageDate);
+        public MarriageBuilder addDateEndOfMarriage(Optional<LocalDate> endOfMarriageDate) {
+            this.dateEndOfMarriage = endOfMarriageDate;
             return this;
         }
         public Marriage build()

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,11 +71,11 @@ public class MarriageBuilderTest {
     public void marryADivorsedPerson() {
         Marriage firstMarriage = new Marriage.MarriageBuilder()
                 .addCouple(listOfPeople().get(1), listOfPeople().get(0))
-                .addDateEndOfMarriage(LocalDate.of(2010, 03, 12))
+                .addDateEndOfMarriage(Optional.of(LocalDate.of(2010, 03, 12)))
                 .build();
         Marriage marriageAfterDivorce = new Marriage.MarriageBuilder()
                 .addCouple(listOfPeople().get(0), listOfPeople().get(2))
-                .addDateOfMarriage(LocalDate.of(2014, 10, 05))
+                .addDateOfMarriage(Optional.of(LocalDate.of(2014, 10, 05)))
                 .build();
         assertTrue(marriageAfterDivorce.getCouple().getKey().equals(listOfPeople().get(0)) ||
                 marriageAfterDivorce.getCouple().getValue().equals(listOfPeople().get(0))
@@ -92,8 +93,8 @@ public class MarriageBuilderTest {
                 () -> assertThrows(IllegalArgumentException.class, () -> {
                     new Marriage.MarriageBuilder()
                             .addCouple(listOfPeople().get(0), listOfPeople().get(1))
-                            .addDateOfMarriage(LocalDate.of(2012,12,04))
-                            .addDateEndOfMarriage(LocalDate.of(2012,10,14))
+                            .addDateOfMarriage(Optional.of(LocalDate.of(2012,12,04)))
+                            .addDateEndOfMarriage(Optional.of(LocalDate.of(2012,10,14)))
                             .build();
                 })
         );

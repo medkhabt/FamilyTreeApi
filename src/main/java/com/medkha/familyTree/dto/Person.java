@@ -11,6 +11,7 @@ public class Person {
     private final Gender gender;
 
     private final BirthInformation birthInformation;
+    private final Optional<DeathInformation> deathInformation;
     private final Optional<Person> father;
     private final Optional<Person> mother;
 
@@ -18,6 +19,7 @@ public class Person {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.birthInformation = builder.birthInformation;
+        this.deathInformation = builder.deathInformation;
         this.gender = builder.gender;
         this.father = builder.father;
         this.mother = builder.mother;
@@ -35,6 +37,7 @@ public class Person {
     public BirthInformation getBirthInformation() {
         return birthInformation;
     }
+    public Optional<DeathInformation> getDeathInformation() { return deathInformation; }
     public Optional<Person> getFather() {
         return father;
     }
@@ -59,11 +62,13 @@ public class Person {
         private Gender gender;
 
         private BirthInformation birthInformation;
+        private Optional<DeathInformation> deathInformation;
         private Optional<Person> father;
         private Optional<Person> mother;
 
         public PersonBuilder(){
             this.birthInformation = new BirthInformation(Optional.empty(), Optional.empty());
+            this.deathInformation = Optional.empty();
             this.father = Optional.empty();
             this.mother = Optional.empty();
         }
@@ -84,6 +89,27 @@ public class Person {
 
         public PersonBuilder addBirthPlace(Optional<String> birthPlace) {
             this.birthInformation.setBirthPlace(birthPlace);
+            return this;
+        }
+
+        public PersonBuilder isDead() {
+            this.deathInformation = Optional.of(new DeathInformation());
+            return this;
+        }
+
+        public PersonBuilder addDeathDate(Optional<LocalDate> deathDate) {
+            this.deathInformation.orElseThrow(
+                    () -> new IllegalArgumentException("Can't add death date if the person is not dead, please specify"
+                            + "that he is dead before adding the death date.")
+            ).setDeathDate(deathDate);
+            return this;
+        }
+
+        public PersonBuilder addDeathPlace(Optional<String> deathPlace) {
+            this.deathInformation.orElseThrow(
+                    () -> new IllegalArgumentException("Can't add death place if the person is not dead, please specify"
+                            + "that he is dead before adding the death place.")
+            ).setDeathPlace(deathPlace);
             return this;
         }
 

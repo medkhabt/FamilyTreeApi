@@ -1,44 +1,40 @@
 package com.medkha.familyTree.dto;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 public class DeathInformation {
 
 
-	private LocalDate deathDate;
-	private String deathPlace;
+	private Optional<LocalDate> deathDate;
+	private Optional<String> deathPlace;
 	
 	
 	protected DeathInformation() {
-		
+		this.deathDate = Optional.empty();
+		this.deathPlace = Optional.empty();
 	}
 
 
-	public DeathInformation(LocalDate deathDate, String deathPlace) {
+	public DeathInformation(Optional<LocalDate> deathDate, Optional<String> deathPlace) {
 		this.deathDate = deathDate;
 		this.deathPlace = deathPlace;
 	}
 
-
-	public LocalDate getDeathDate() {
+	public Optional<LocalDate> getDeathDate() {
 		return deathDate;
 	}
 
-
-	public void setDeathDate(LocalDate deathDate) {
+	public void setDeathDate(Optional<LocalDate> deathDate) {
 		this.deathDate = deathDate;
 	}
 
-
-	public String getDeathPlace() {
+	public Optional<String> getDeathPlace() {
 		return deathPlace;
 	}
 
-
-	public void setDeathPlace(String deathPlace) {
+	public void setDeathPlace(Optional<String> deathPlace) {
 		this.deathPlace = deathPlace;
 	}
-	
-	
 }

@@ -15,6 +15,12 @@
 
   <name>family-service</name>
 
+  <properties>
+    <java.version>11</java.version>
+    <maven.compiler.source>14</maven.compiler.source>
+    <maven.compiler.target>14</maven.compiler.target>
+  </properties>
+
 
   <dependencies>
     <dependency>

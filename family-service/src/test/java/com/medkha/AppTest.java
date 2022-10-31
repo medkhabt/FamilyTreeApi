@@ -1,4 +1,4 @@
-package org.example;
+package com.medkha;
 
 import static org.junit.Assert.assertTrue;
 

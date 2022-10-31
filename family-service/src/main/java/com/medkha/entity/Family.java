@@ -25,7 +25,6 @@ public class Family {
         this.name = name;
     }
 
-    // TODO: this should change, because two families with the same name may exist.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

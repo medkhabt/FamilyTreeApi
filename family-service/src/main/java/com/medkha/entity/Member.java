@@ -14,7 +14,6 @@ public class Member {
     private final String lastName;
     private final String firstName;
     private final LocalDate birthDate;
-    // TODO: validate the place
     private final String birthPlace;
     private final Optional<LocalDate> deathDate;
     private final Optional<String> deathPlace;

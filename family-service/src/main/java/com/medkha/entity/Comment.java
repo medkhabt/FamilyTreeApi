@@ -5,7 +5,6 @@ import java.util.Objects;
 
 public class Comment {
     private String content;
-    // TODO: comment with tags ?
     private LocalDateTime createdOn;
     private LocalDateTime lastUpdatedOn;
     private String lastUpdatedByUserId;
@@ -17,9 +16,6 @@ public class Comment {
         this.lastUpdatedByUserId = lastUpdatedByUserId;
     }
 
-    /* TODO: Not sure if this is a good idea, the service should take in consideration this.
-        i'll keep it for now but maybe i should remove it.
-    */
     /**
      *
      * @param content: the content of the message

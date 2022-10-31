@@ -5,6 +5,7 @@
 	<groupId>com.medkha</groupId>
 	<artifactId>familyTree</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>familyTree</name>
 	<description>building an api for my family tree</description>
 
@@ -14,8 +15,11 @@
 		<maven.compiler.target>14</maven.compiler.target>
 	</properties>
 
-	<dependencies>
-	</dependencies>
+	<modules>
+		<module>family-service</module>
+<!--		<module>user-service</module>-->
+<!--		<module>vote-service</module>-->
+	</modules>
 
 
 </project>

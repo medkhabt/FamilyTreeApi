@@ -33,13 +33,13 @@ public class Member {
         private final LocalDate birthDate;
         private final String birthPlace;
         private final Family family;
-        private  Optional<LocalDate> deathDate;
-        private  Optional<String> deathPlace;
+        private  Optional<LocalDate> deathDate = Optional.empty();
+        private  Optional<String> deathPlace = Optional.empty();
         private  final Set<Comment> comments;
-        private  Optional<Member> father;
-        private  Optional<Member> mother;
+        private  Optional<Member> father = Optional.empty();
+        private  Optional<Member> mother = Optional.empty();
         private  final Set<Family> familiesTakePartOf;
-        private Optional<String> userId;
+        private Optional<String> userId = Optional.empty();
 
         public Builder(String lastName, String firstName, LocalDate birthDate, String birthPlace, Family family) {
             this.lastName = lastName;

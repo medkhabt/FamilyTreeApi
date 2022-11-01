@@ -1,11 +1,15 @@
 package com.medkha.service;
 
+import com.google.common.collect.Multimap;
+import com.medkha.entity.CloseMemberType;
 import com.medkha.entity.Family;
 import com.medkha.entity.Member;
 import com.medkha.service.impl.MemberServiceNaive;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,6 +24,10 @@ public class MemberServiceTest {
         this.memberService = MemberServiceNaive.getInstance();
     }
 
+    @AfterEach
+    public void reset() {
+        this.memberService.clearMembers();
+    }
     @Test
     public void test_getMembersByFamily(){
         // given
@@ -89,5 +97,75 @@ public class MemberServiceTest {
                 () ->  assertTrue(result_userIdNotExisting.isEmpty())
         );
 
+    }
+
+    @Test
+    public void test_getCloseMembers(){
+        // given
+        final Family __FAMILY__ = new Family("family1");
+        final Family __FAMILY2__ = new Family("family2");
+        final Family __FAMILY3__ = new Family("family3");
+        final Member father =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), "somewhere",__FAMILY__)
+                        .build();
+        final Member mother =
+                new Member.Builder("family2", "firstName1", LocalDate.of(1978, 1, 1), "somewhere1",__FAMILY2__)
+                        .build();
+        final Member memberSpecified =
+                new Member.Builder("family1", "member", LocalDate.of(1994, 1, 1), "somewhere1",__FAMILY__)
+                        .father(father)
+                        .mother(mother)
+                        .build();
+        final Member spouseSibling1 =
+                new Member.Builder("family2", "spouseSibling1", LocalDate.of(1995, 1, 1), "somewhere1",__FAMILY2__)
+                        .build();
+        final Member sibling1 =
+                new Member.Builder("family1", "sibling1", LocalDate.of(1995, 1, 1), "somewhere1",__FAMILY__)
+                        .father(father)
+                        .mother(mother)
+                        .build();
+
+        final Member spouseMember =
+                new Member.Builder("family3", "spouseSibling1", LocalDate.of(1995, 1, 1), "somewhere1",__FAMILY3__)
+                        .build();
+
+        final Member sibling2 =
+                new Member.Builder("family1", "sibling2", LocalDate.of(1992, 1, 1), "somewhere1",__FAMILY__)
+                        .father(father)
+                        .mother(mother)
+                        .build();
+        final Member childSibling1 =
+                new Member.Builder("family1", "childSibling1", LocalDate.of(2010, 1, 1), "somewhere1",__FAMILY__)
+                        .father(sibling1)
+                        .mother(spouseSibling1)
+                        .build();
+        final Member childMember =
+                new Member.Builder("family1", "childMember", LocalDate.of(2010, 1, 1), "somewhere1",__FAMILY__)
+                        .father(memberSpecified)
+                        .mother(spouseMember)
+                        .build();
+        this.memberService.createMember(father);
+        this.memberService.createMember(mother);
+        this.memberService.createMember(memberSpecified);
+        this.memberService.createMember(spouseSibling1);
+        this.memberService.createMember(sibling1);
+        this.memberService.createMember(spouseMember);
+        this.memberService.createMember(sibling2);
+        this.memberService.createMember(childSibling1);
+        this.memberService.createMember(childMember);
+
+        // ChildSibling1 should not be part of the close members.
+
+        // when
+        Multimap<CloseMemberType, Member> closeMembersResult = this.memberService.getCloseMembers(memberSpecified);
+        long sizeCloseMemberResult = Arrays.stream(CloseMemberType.values())
+                                            .map(type -> closeMembersResult.get(type).size())
+                                            .reduce(0, (f,l)-> f+l);
+
+        // then
+        assertAll(
+                () -> assertFalse(closeMembersResult.get(CloseMemberType.CHILD).contains(childSibling1)),
+                () -> assertEquals(this.memberService.getAllMembers().size() - 4, sizeCloseMemberResult)
+        );
     }
 }

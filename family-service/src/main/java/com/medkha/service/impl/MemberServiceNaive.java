@@ -5,6 +5,8 @@ import com.google.common.collect.Multimap;
 import com.medkha.entity.CloseMemberType;
 import com.medkha.entity.Family;
 import com.medkha.entity.Member;
+import com.medkha.service.LocationService;
+import com.medkha.service.LocationServices;
 import com.medkha.service.MemberService;
 
 import java.util.*;
@@ -13,8 +15,9 @@ import java.util.stream.Collectors;
 public class MemberServiceNaive implements MemberService {
     private static MemberService instance = null;
     private Set<Member> members = new HashSet<>();
+    private LocationService locationService;
     private MemberServiceNaive(){
-
+       locationService = LocationServices.getLocationService();
     }
 
     @Override
@@ -29,6 +32,10 @@ public class MemberServiceNaive implements MemberService {
 
     @Override
     public void createMember(Member member) {
+        //TODO for all the locations not just the birthplace. (also for deathplace , and look if there is other locations.)
+        if(!this.locationService.isValidCity(member.getBirthPlace())) {
+            throw new IllegalArgumentException("member with invalid city " + member.getBirthPlace());
+        }
         if(member.getUserId().isPresent()) {
             this.members.stream().filter(m -> m.getUserId().equals(member.getUserId())).findAny().ifPresent(
                     (m) -> {throw new IllegalArgumentException("Failed to create a new Member, There is already a member with " +

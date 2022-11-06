@@ -176,6 +176,7 @@ public class MemberServiceTest {
         final String __VALID_CITY__ = "agadir";
         final String __VALID_CITY_UPPER_LOWER_CASE__ = "aGaDIr";
         final String __NOT_VALID_CITY__ = "notValid";
+        final String __NOT_VALID_DEATH_CITY__ = "notValid";
         final Member memberWithValidCity =
                 new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY__,__FAMILY__)
                         .build();
@@ -184,6 +185,10 @@ public class MemberServiceTest {
                         .build();
         final Member memberWithNotValidCity =
                 new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __NOT_VALID_CITY__,__FAMILY__)
+                        .build();
+        final Member memberWithNotValidDeathCity =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY__,__FAMILY__)
+                        .deathPlace(__NOT_VALID_DEATH_CITY__)
                         .build();
 
         // when
@@ -195,7 +200,47 @@ public class MemberServiceTest {
         assertAll(
                 () -> assertTrue(this.memberService.getAllMembers().contains(memberWithValidCity)),
                 () -> assertTrue(this.memberService.getAllMembers().contains(memberWithValidCityUpperLowerCase)),
-                () -> assertThrows(IllegalArgumentException.class, ()-> this.memberService.createMember(memberWithNotValidCity))
+                () -> assertThrows(IllegalArgumentException.class, () -> this.memberService.createMember(memberWithNotValidCity)),
+                () -> assertThrows(IllegalArgumentException.class, () -> this.memberService.createMember(memberWithNotValidDeathCity))
         );
+    }
+
+    @Test
+    public void testCreatMemberWithCityAndCountryValidation() {
+        //given
+        final Family __FAMILY__ = new Family("family1");
+        final String __VALID_CITY_AND_COUNTRY__ = "agadir, morocco";
+        final String __VALID_CITY_AND_COUNTRY__NOT_WELL_FORMED__ = "aGaDIr ,MoRocco";
+        final String __NOT_VALID_CITY_AND_VALID_COUNTRY = "notvalid, Morocco";
+        final String __VALID_CITY_AND_NOT_VALID_COUNTRY__ = "Agadir, notValid";
+        final Member memberWithValidCityAndCoutry =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_AND_COUNTRY__,__FAMILY__)
+                        .build();
+        final Member memberWithValidCityAndCountryNotWellFormed =
+                new Member.Builder("family11", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_AND_COUNTRY__NOT_WELL_FORMED__,__FAMILY__)
+                        .build();
+        final Member memberWithNotValidCityAndValidCountry =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_AND_COUNTRY__,__FAMILY__)
+                        .deathPlace(__NOT_VALID_CITY_AND_VALID_COUNTRY)
+                        .build();
+        final Member memberWithValidCityAndNotValidCountry =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_AND_NOT_VALID_COUNTRY__,__FAMILY__)
+                        .deathPlace(__VALID_CITY_AND_COUNTRY__)
+                        .build();
+
+        // when
+        this.memberService.createMember(memberWithValidCityAndCoutry);
+        this.memberService.createMember(memberWithValidCityAndCountryNotWellFormed);
+
+        // then
+        assertAll(
+                () -> this.memberService.getAllMembers().contains(memberWithValidCityAndCoutry),
+                () -> this.memberService.getAllMembers().contains(memberWithValidCityAndCountryNotWellFormed),
+                () -> assertThrows(IllegalArgumentException.class,
+                        () -> this.memberService.createMember(memberWithNotValidCityAndValidCountry)),
+                () -> assertThrows(IllegalArgumentException.class,
+                        () -> this.memberService.createMember(memberWithValidCityAndNotValidCountry))
+        );
+
     }
 }

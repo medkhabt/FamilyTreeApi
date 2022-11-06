@@ -32,10 +32,17 @@ public class MemberServiceNaive implements MemberService {
 
     @Override
     public void createMember(Member member) {
-        //TODO for all the locations not just the birthplace. (also for deathplace , and look if there is other locations.)
+        // format the string to city and country
         if(!this.locationService.isValidCity(member.getBirthPlace())) {
-            throw new IllegalArgumentException("member with invalid city " + member.getBirthPlace());
+            throw new IllegalArgumentException("member with invalid birth city " + member.getBirthPlace());
         }
+        member.getDeathPlace().ifPresent(
+                place -> {
+                    if(!this.locationService.isValidCity(place)){
+                        throw new IllegalArgumentException("member with invalid death city " + place);
+                    }
+                }
+        );
         if(member.getUserId().isPresent()) {
             this.members.stream().filter(m -> m.getUserId().equals(member.getUserId())).findAny().ifPresent(
                     (m) -> {throw new IllegalArgumentException("Failed to create a new Member, There is already a member with " +

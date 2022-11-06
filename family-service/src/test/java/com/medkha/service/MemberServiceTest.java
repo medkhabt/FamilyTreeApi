@@ -34,13 +34,13 @@ public class MemberServiceTest {
         Family family = new Family("family1");
         Family family2 = new Family("family2");
         Member memberWithoutParents1 =
-                new Member.Builder("lastName", "firstName", LocalDate.of(1978, 1, 1), "somewhere",family)
+                new Member.Builder("lastName", "firstName", LocalDate.of(1978, 1, 1), "agadir",family)
                         .build();
         Member memberWithoutParents2 =
-                new Member.Builder("lastName2", "firstName2", LocalDate.of(1978, 1, 1), "somewhere2",family2)
+                new Member.Builder("lastName2", "firstName2", LocalDate.of(1978, 1, 1), "agadir",family2)
                         .build();
         Member memberWithParent=
-                new Member.Builder("lastName3", "firstName3", LocalDate.of(2000, 1, 1), "somewhere3",family)
+                new Member.Builder("lastName3", "firstName3", LocalDate.of(2000, 1, 1), "agadir",family)
                         .father(memberWithoutParents1)
                         .mother(memberWithoutParents2)
                         .build();
@@ -73,14 +73,14 @@ public class MemberServiceTest {
         final String __OTHER_USERID__ = "2";
         final String __TOTALY_DIFF_USERID__ = "3";
         final Member __MEMBER_WITHOUT_USER__ =
-                new Member.Builder("lastName", "firstName", LocalDate.of(1978, 1, 1), "somewhere",__FAMILY__)
+                new Member.Builder("lastName", "firstName", LocalDate.of(1978, 1, 1), "agadir",__FAMILY__)
                         .build();
         final Member __MEMBER_WITH_RIGHT_USER__ =
-                new Member.Builder("lastName1", "firstName1", LocalDate.of(1978, 1, 1), "somewhere1",__FAMILY__)
+                new Member.Builder("lastName1", "firstName1", LocalDate.of(1978, 1, 1), "agadir",__FAMILY__)
                         .user(__USERID__)
                         .build();
         final Member __MEMBER_WITH_OTHER_USER__ =
-                new Member.Builder("lastName1", "firstName1", LocalDate.of(1978, 1, 1), "somewhere1",__FAMILY__)
+                new Member.Builder("lastName1", "firstName1", LocalDate.of(1978, 1, 1), "agadir",__FAMILY__)
                         .user(__OTHER_USERID__)
                         .build();
         this.memberService.createMember(__MEMBER_WITH_RIGHT_USER__);
@@ -106,41 +106,41 @@ public class MemberServiceTest {
         final Family __FAMILY2__ = new Family("family2");
         final Family __FAMILY3__ = new Family("family3");
         final Member father =
-                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), "somewhere",__FAMILY__)
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), "agadir",__FAMILY__)
                         .build();
         final Member mother =
-                new Member.Builder("family2", "firstName1", LocalDate.of(1978, 1, 1), "somewhere1",__FAMILY2__)
+                new Member.Builder("family2", "firstName1", LocalDate.of(1978, 1, 1), "agadir",__FAMILY2__)
                         .build();
         final Member memberSpecified =
-                new Member.Builder("family1", "member", LocalDate.of(1994, 1, 1), "somewhere1",__FAMILY__)
+                new Member.Builder("family1", "member", LocalDate.of(1994, 1, 1), "agadir",__FAMILY__)
                         .father(father)
                         .mother(mother)
                         .build();
         final Member spouseSibling1 =
-                new Member.Builder("family2", "spouseSibling1", LocalDate.of(1995, 1, 1), "somewhere1",__FAMILY2__)
+                new Member.Builder("family2", "spouseSibling1", LocalDate.of(1995, 1, 1), "agadir",__FAMILY2__)
                         .build();
         final Member sibling1 =
-                new Member.Builder("family1", "sibling1", LocalDate.of(1995, 1, 1), "somewhere1",__FAMILY__)
+                new Member.Builder("family1", "sibling1", LocalDate.of(1995, 1, 1), "agadir",__FAMILY__)
                         .father(father)
                         .mother(mother)
                         .build();
 
         final Member spouseMember =
-                new Member.Builder("family3", "spouseSibling1", LocalDate.of(1995, 1, 1), "somewhere1",__FAMILY3__)
+                new Member.Builder("family3", "spouseSibling1", LocalDate.of(1995, 1, 1), "agadir",__FAMILY3__)
                         .build();
 
         final Member sibling2 =
-                new Member.Builder("family1", "sibling2", LocalDate.of(1992, 1, 1), "somewhere1",__FAMILY__)
+                new Member.Builder("family1", "sibling2", LocalDate.of(1992, 1, 1), "agadir",__FAMILY__)
                         .father(father)
                         .mother(mother)
                         .build();
         final Member childSibling1 =
-                new Member.Builder("family1", "childSibling1", LocalDate.of(2010, 1, 1), "somewhere1",__FAMILY__)
+                new Member.Builder("family1", "childSibling1", LocalDate.of(2010, 1, 1), "agadir",__FAMILY__)
                         .father(sibling1)
                         .mother(spouseSibling1)
                         .build();
         final Member childMember =
-                new Member.Builder("family1", "childMember", LocalDate.of(2010, 1, 1), "somewhere1",__FAMILY__)
+                new Member.Builder("family1", "childMember", LocalDate.of(2010, 1, 1), "agadir",__FAMILY__)
                         .father(memberSpecified)
                         .mother(spouseMember)
                         .build();
@@ -167,5 +167,80 @@ public class MemberServiceTest {
                 () -> assertFalse(closeMembersResult.get(CloseMemberType.CHILD).contains(childSibling1)),
                 () -> assertEquals(this.memberService.getAllMembers().size() - 4, sizeCloseMemberResult)
         );
+    }
+
+    @Test
+    public void testCreateMemberWithCityValidation(){
+        // given
+        final Family __FAMILY__ = new Family("family1");
+        final String __VALID_CITY__ = "agadir";
+        final String __VALID_CITY_UPPER_LOWER_CASE__ = "aGaDIr";
+        final String __NOT_VALID_CITY__ = "notValid";
+        final String __NOT_VALID_DEATH_CITY__ = "notValid";
+        final Member memberWithValidCity =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY__,__FAMILY__)
+                        .build();
+        final Member memberWithValidCityUpperLowerCase =
+                new Member.Builder("family11", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_UPPER_LOWER_CASE__,__FAMILY__)
+                        .build();
+        final Member memberWithNotValidCity =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __NOT_VALID_CITY__,__FAMILY__)
+                        .build();
+        final Member memberWithNotValidDeathCity =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY__,__FAMILY__)
+                        .deathPlace(__NOT_VALID_DEATH_CITY__)
+                        .build();
+
+        // when
+        this.memberService.createMember(memberWithValidCity);
+        this.memberService.createMember(memberWithValidCityUpperLowerCase);
+
+
+        // then
+        assertAll(
+                () -> assertTrue(this.memberService.getAllMembers().contains(memberWithValidCity)),
+                () -> assertTrue(this.memberService.getAllMembers().contains(memberWithValidCityUpperLowerCase)),
+                () -> assertThrows(IllegalArgumentException.class, () -> this.memberService.createMember(memberWithNotValidCity)),
+                () -> assertThrows(IllegalArgumentException.class, () -> this.memberService.createMember(memberWithNotValidDeathCity))
+        );
+    }
+
+    @Test
+    public void testCreatMemberWithCityAndCountryValidation() {
+        //given
+        final Family __FAMILY__ = new Family("family1");
+        final String __VALID_CITY_AND_COUNTRY__ = "agadir, morocco";
+        final String __VALID_CITY_AND_COUNTRY__NOT_WELL_FORMED__ = "aGaDIr ,MoRocco";
+        final String __NOT_VALID_CITY_AND_VALID_COUNTRY = "notvalid, Morocco";
+        final String __VALID_CITY_AND_NOT_VALID_COUNTRY__ = "Agadir, notValid";
+        final Member memberWithValidCityAndCoutry =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_AND_COUNTRY__,__FAMILY__)
+                        .build();
+        final Member memberWithValidCityAndCountryNotWellFormed =
+                new Member.Builder("family11", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_AND_COUNTRY__NOT_WELL_FORMED__,__FAMILY__)
+                        .build();
+        final Member memberWithNotValidCityAndValidCountry =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_AND_COUNTRY__,__FAMILY__)
+                        .deathPlace(__NOT_VALID_CITY_AND_VALID_COUNTRY)
+                        .build();
+        final Member memberWithValidCityAndNotValidCountry =
+                new Member.Builder("family1", "firstName", LocalDate.of(1978, 1, 1), __VALID_CITY_AND_NOT_VALID_COUNTRY__,__FAMILY__)
+                        .deathPlace(__VALID_CITY_AND_COUNTRY__)
+                        .build();
+
+        // when
+        this.memberService.createMember(memberWithValidCityAndCoutry);
+        this.memberService.createMember(memberWithValidCityAndCountryNotWellFormed);
+
+        // then
+        assertAll(
+                () -> this.memberService.getAllMembers().contains(memberWithValidCityAndCoutry),
+                () -> this.memberService.getAllMembers().contains(memberWithValidCityAndCountryNotWellFormed),
+                () -> assertThrows(IllegalArgumentException.class,
+                        () -> this.memberService.createMember(memberWithNotValidCityAndValidCountry)),
+                () -> assertThrows(IllegalArgumentException.class,
+                        () -> this.memberService.createMember(memberWithValidCityAndNotValidCountry))
+        );
+
     }
 }
